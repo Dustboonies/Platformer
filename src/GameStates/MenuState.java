@@ -93,6 +93,7 @@ public class MenuState extends GameState{
 	private void select() {
 		if(CurrentChoice == 0) {
 			System.out.println("Game Not Created Yet");
+			Manager.SetActiveGameState(GameStateManager.GAMESTATE_LEVEL1);
 		}
 		else if(CurrentChoice == 1) {
 			System.exit(0);

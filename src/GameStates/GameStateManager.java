@@ -23,6 +23,8 @@ public class GameStateManager {
 	private void LoadState(int GameStateID){
 		if(GameStateID == GAMESTATE_MENU){
 			GameStates[GameStateID] = new MenuState(this);
+		} else if(GameStateID == GAMESTATE_LEVEL1){
+			GameStates[GameStateID] = new Level1State(this);
 		}
 	}
 	

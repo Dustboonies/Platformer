@@ -14,10 +14,11 @@ public class GameDriver {
 		Window.setLocationRelativeTo(null);						//Makes the JFrame appear in the middle of the screen
 		Window.setVisible(true);								//Makes the JFrame Visible
 		
-		while(true){
-			Game.Update();
-			Game.repaint();
-			Thread.sleep(10);
+		//This is the Game Loop
+		while(true){											//We want a never ending While loop
+			Game.Update();										//Game Update
+			Game.repaint();										//Game Paints it on screen
+			Thread.sleep(10);									//Wait 10 ms to go again
 		}
 		
 	}
