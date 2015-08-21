@@ -3,12 +3,6 @@ import javax.swing.JFrame;
 
 public class GameDriver {
 
-<<<<<<< Updated upstream
-	public static void main(String[] args) {
-		
-		GameFrame Frame = new GameFrame();
-		
-=======
 	public static void main(String[] args) throws InterruptedException{
 		JFrame Window = new JFrame("Simple Platformer");
 		GamePanel game = new GamePanel();
@@ -23,7 +17,6 @@ public class GameDriver {
             game.repaint();
             Thread.sleep(10);
         }
->>>>>>> Stashed changes
 	}
 	
 }
