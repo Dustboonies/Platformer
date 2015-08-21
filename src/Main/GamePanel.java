@@ -38,18 +38,18 @@ public class GamePanel extends JPanel implements KeyListener{
 	}
 	
 	@Override
-	public void paintComponent(Graphics g){
-		Graphics2D g2 = (Graphics2D)g;
-		super.paintComponent(g2);
+	public void paintComponent(Graphics g){	//Draws Graphics to Screen
+		Graphics2D g2 = (Graphics2D)g;		//Sets the Graphics to 2D
+		super.paintComponent(g2);			//Set super for Override
 		
-		Manager.Draw(g2);
+		Manager.Draw(g2);					//Game State Draws to Screen
 
-		g.dispose();
-		g2.dispose();
+		g.dispose();						//Dispose of g
+		g2.dispose();						//and g2 to save space
 	}
 	
 	public void Update(){					//Function that Updates the GamePanel and GameState
-		Manager.Update();
+		Manager.Update();					//Current Game State Updates
 		Keys.update();						//Key Input Gets Handled
 	}
 

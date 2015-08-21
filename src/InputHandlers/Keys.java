@@ -21,7 +21,7 @@ public class Keys {												//Class meant to Handle Key Events
 	public static int ESCAPE = 9;
 	public static int SPACE = 10;
 	
-	public static void keySet(int i, boolean b) {
+	public static void keySet(int i, boolean b) {				//Sets that key pressed boolean as true or false
 		if(i == KeyEvent.VK_UP) KeyState[UP] = b;
 		else if(i == KeyEvent.VK_LEFT) KeyState[LEFT] = b;
 		else if(i == KeyEvent.VK_DOWN) KeyState[DOWN] = b;
@@ -35,18 +35,17 @@ public class Keys {												//Class meant to Handle Key Events
 		else if(i == KeyEvent.VK_SPACE) KeyState[SPACE] = b;
 	}
 	
-	public static void update() {
+	public static void update() {								//Updates the current Key State
 		for(int i = 0; i < NUM_KEYS; i++) {
 			PrevKeyState[i] = KeyState[i];
 		}
 	}
 	
-	public static boolean isPressed(int i) {
-//		return KeyState[i] && !PrevKeyState[i];
+	public static boolean isPressed(int i) {					//Tells if the key is pressed
 		return KeyState[i];
 	}
 	
-	public static boolean anyKeyPress() {
+	public static boolean anyKeyPress() {						//Looks to see if any key is pressed
 		for(int i = 0; i < NUM_KEYS; i++) {
 			if(KeyState[i]) return true;
 		}

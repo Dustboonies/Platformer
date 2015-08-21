@@ -6,7 +6,7 @@ import java.awt.Rectangle;
 import InputHandlers.Keys;
 import Main.GamePanel;
 
-public class Level1State extends GameState{
+public class Level1State extends GameState{							//Not Fully Devloped, Just a bouncing ball
 
 	private int x, y, vx, vy;
 	private Rectangle Ball, Stage, Thingy;
@@ -22,7 +22,7 @@ public class Level1State extends GameState{
 		Stage = new Rectangle(0, GamePanel.HEIGHT, GamePanel.WIDTH, 10);
 		Rects[0] = Stage;
 		
-		Thingy = new Rectangle(20, GamePanel.HEIGHT-50, 100, 10);
+		Thingy = new Rectangle(50, GamePanel.HEIGHT-100, 100, 50);
 		Rects[1] = Thingy;
 		
 		inAir = false;
@@ -36,40 +36,38 @@ public class Level1State extends GameState{
 
 	@Override
 	public void Update() {
-//		for(int i = 0; i < Math.abs(vx); i++){
-//			if(vx > 0) x += 1;
-//			if(vx < 0) x -= 1;
-			x += vx;
-			Ball = new Rectangle(x, y, BALL_WIDTH, BALL_HEIGHT);
-			for(Rectangle rect: Rects){
-				if(Ball.intersects(rect)){
-					if(vx > 0){											//Intersecting from Right
-						x = rect.x - BALL_WIDTH;
-					} else if(vx < 0){									//Intersecting from Left
-						x = rect.x + rect.width;
-					}
+		x += vx;
+		Ball = new Rectangle(x, y, BALL_WIDTH, BALL_HEIGHT);
+		for(Rectangle rect: Rects){
+			if(Ball.intersects(rect)){
+				if(vx > 0){											//Intersecting from Right
+					x = rect.x - BALL_WIDTH;
+				} else if(vx < 0){									//Intersecting from Left
+					x = rect.x + rect.width;
 				}
 			}
-//		}
+		}
 		
-//		for(int i = 0; i < Math.abs(vy); i++){
-//			if(vy > 0) y -= 1;
-//			if(vy < 0) y += 1;
-			y -= vy;
-			Ball = new Rectangle(x, y, BALL_WIDTH, BALL_HEIGHT);
-			for(Rectangle rect: Rects){
-				if(Ball.intersects(rect)){
-					if(vy < 0){											//Intersecting from Above
-						y = rect.y - BALL_HEIGHT;
-						inAir = false;
-					} else if(vy > 0){									//Intersecting from Below
-						y = rect.y + rect.height;
-					}
+		if (x < 0) x = 0;
+		if(x + BALL_WIDTH > GamePanel.WIDTH) x = GamePanel.WIDTH - BALL_WIDTH;
+		
+		y -= vy;
+		Ball = new Rectangle(x, y, BALL_WIDTH, BALL_HEIGHT);
+		for(Rectangle rect: Rects){
+			if(Ball.intersects(rect)){
+				if(vy < 0){											//Intersecting from Above
+					y = rect.y - BALL_HEIGHT;
+					inAir = false;
+				} else if(vy > 0){									//Intersecting from Below
+					y = rect.y + rect.height;
+					vy = 0;
 				}
 			}
-//		}
-		
+		}		
 
+		if (y < 0) y = 0;
+		if(y + BALL_HEIGHT > GamePanel.HEIGHT) y = GamePanel.HEIGHT - BALL_HEIGHT;
+		
 		if(inAir) vy -= 1;
 		
 		Ball = new Rectangle(x, y, BALL_WIDTH, BALL_HEIGHT);

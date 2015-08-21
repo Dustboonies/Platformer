@@ -2,48 +2,48 @@ package GameStates;
 
 import java.awt.Graphics2D;
 
-public class GameStateManager {
+public class GameStateManager {									//Manages Game States
 	
-	private GameState[] GameStates;
-	private int CurrentState = 0;
+	private GameState[] GameStates;								//Array of GameStates to find Current State
+	private int CurrentState = 0;								//Current State Identifier
 
-	public static final int GAMESTATE_NUMSTATES = 4;
-	public static final int GAMESTATE_NONE = 0;
-	public static final int GAMESTATE_INTRO = 1;
-	public static final int GAMESTATE_MENU = 2;
-	public static final int GAMESTATE_LEVEL1 = 3;
+	public static final int GAMESTATE_NUMSTATES = 4;			//Number of Game States
+	public static final int GAMESTATE_NONE = 0;					//Game State ID for No State
+	public static final int GAMESTATE_INTRO = 1;				//Game State ID for an Intro *Currently Uncreated*
+	public static final int GAMESTATE_MENU = 2;					//Game State ID for the Menu State
+	public static final int GAMESTATE_LEVEL1 = 3;				//Game State ID for Level 1 *Currently Just a Bouncing Ball*
 	
-	public GameStateManager(){
-		GameStates = new GameState[GAMESTATE_NUMSTATES];
+	public GameStateManager(){									//Constructor for GameState Manager
+		GameStates = new GameState[GAMESTATE_NUMSTATES];		//Initialize Array
 		
-		CurrentState = GAMESTATE_MENU;
-		SetActiveGameState(CurrentState);
+		CurrentState = GAMESTATE_MENU;							//Set the Current Game State to go to Menu
+		SetActiveGameState(CurrentState);						//Set the Active Game State to the Current State which is Menu
 	}
 	
-	private void LoadState(int GameStateID){
-		if(GameStateID == GAMESTATE_MENU){
+	private void LoadState(int GameStateID){					//Loads a GameState by identifier
+		if(GameStateID == GAMESTATE_MENU){						//Loads Menu State
 			GameStates[GameStateID] = new MenuState(this);
-		} else if(GameStateID == GAMESTATE_LEVEL1){
+		} else if(GameStateID == GAMESTATE_LEVEL1){				//Loads Level1 State
 			GameStates[GameStateID] = new Level1State(this);
 		}
 	}
-	
-	private void UnloadState(int GameStateID){
-		GameStates[GameStateID] = null;
+
+	private void UnloadState(int GameStateID){					//Unloads a GameState
+		GameStates[GameStateID] = null;							//Sets it to NULL
 	}
 	
-	public void Update(){
+	public void Update(){										//Update Function calls Current State's Update Function
 		if(GameStates[CurrentState] != null) GameStates[CurrentState].Update();
 	}
 	
-	public void Draw(Graphics2D Renderer){
+	public void Draw(Graphics2D Renderer){						//Draw Function calls Current State's Draw Function
 		GameStates[CurrentState].Draw(Renderer);
 	}
 	
-	public void SetActiveGameState(int GameStateID){
-		UnloadState(CurrentState);
-		CurrentState = GameStateID;
-		LoadState(GameStateID);
+	public void SetActiveGameState(int GameStateID){			//Sets the Current Game State according to identifier
+		UnloadState(CurrentState);								//Sets the old one to null
+		CurrentState = GameStateID;								//Sets the Current Game State ID to the inputed one
+		LoadState(GameStateID);									//Loads that Game State
 	}
 	
 	
