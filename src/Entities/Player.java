@@ -14,5 +14,4 @@ public class Player extends Entity{
 		return HP;
 	}
 	
-	
 }
