@@ -46,8 +46,6 @@ public class Level1State extends GameState{							//Not Fully Developed, Just a 
 			
 		}
 		
-		System.out.println(BitMask);
-		
 	}
 
 	@Override
