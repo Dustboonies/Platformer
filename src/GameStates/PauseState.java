@@ -4,17 +4,12 @@ import java.awt.Graphics2D;
 
 import InputHandlers.Keys;
 import Main.GamePanel;
-
-import java.awt.Font;
 import java.awt.Color;
 
 public class PauseState extends GameState{
 
-	Font Font;
-	
 	public PauseState(GameStateManager gsm) {
 		super(gsm);
-		Font = new Font("Century Gothic", Font.PLAIN, 25);
 	}
 
 	@Override

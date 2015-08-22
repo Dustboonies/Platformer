@@ -1,6 +1,6 @@
 package Entities;
 
-import com.sun.javafx.geom.Rectangle;
+import java.awt.Rectangle;
 
 public class Entity {
 

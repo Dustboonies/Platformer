@@ -6,7 +6,7 @@ import java.awt.Rectangle;
 import InputHandlers.Keys;
 import Main.GamePanel;
 
-public class Level1State extends GameState{							//Not Fully Devloped, Just a bouncing ball
+public class Level1State extends GameState{							//Not Fully Developed, Just a bouncing ball
 
 	private int x, y, vx, vy;
 	private Rectangle Ball, Stage, Thingy;
