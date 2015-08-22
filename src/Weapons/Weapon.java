@@ -2,8 +2,8 @@ package Weapons;
 
 public class Weapon {
 	
-	private int knockback, damage;
-	
+	int knockback, damage;
+	double atkspeed;
 	
 	
 }
