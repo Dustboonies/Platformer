@@ -19,7 +19,7 @@ public class Level1State extends GameState{							//Not Fully Developed, Just a 
 	private BitMask BitMask;
 	private Rectangle[] Rects = new Rectangle[2];
 	public static int BALL_HEIGHT = 30, BALL_WIDTH = 30;
-	private BufferedImage Image;
+	public BufferedImage Image;
 	
 	public Level1State(GameStateManager gsm) {
 		super(gsm);
@@ -40,11 +40,13 @@ public class Level1State extends GameState{							//Not Fully Developed, Just a 
 	@Override
 	public void Init() {
 		try{
-			Image = ImageIO.read(new File("Images/Map.png"));
+			Image = ImageIO.read(new File("Images/level1.png"));
 			BitMask = new BitMask(Image);
 		} catch(Exception e){
 			
 		}
+		
+		System.out.println(BitMask);
 		
 	}
 
