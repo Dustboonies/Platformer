@@ -1,12 +1,18 @@
 package GameStates;
 
+import java.awt.Color;
 import java.awt.Graphics2D;
+
+import Main.GamePanel;
 
 public class GameStateManager {									//Manages Game States
 	
 	private GameState[] GameStates;								//Array of GameStates to find Current State
 	private int CurrentState = 0;								//Current State Identifier
 
+	private PauseState PauseState;								//Has the ability to Pause during different states
+	private boolean Paused;										//Boolean telling if paused or not
+	
 	public static final int GAMESTATE_NUMSTATES = 4;			//Number of Game States
 	public static final int GAMESTATE_NONE = 0;					//Game State ID for No State
 	public static final int GAMESTATE_INTRO = 1;				//Game State ID for an Intro *Currently Uncreated*
@@ -15,6 +21,9 @@ public class GameStateManager {									//Manages Game States
 	
 	public GameStateManager(){									//Constructor for GameState Manager
 		GameStates = new GameState[GAMESTATE_NUMSTATES];		//Initialize Array
+		
+		PauseState = new PauseState(this);						//Initialize the Pause State
+		Paused = false;											//Not Paused in the beginning
 		
 		CurrentState = GAMESTATE_MENU;							//Set the Current Game State to go to Menu
 		SetActiveGameState(CurrentState);						//Set the Active Game State to the Current State which is Menu
@@ -33,17 +42,29 @@ public class GameStateManager {									//Manages Game States
 	}
 	
 	public void Update(){										//Update Function calls Current State's Update Function
-		if(GameStates[CurrentState] != null) GameStates[CurrentState].Update();
+		if(Paused) PauseState.Update();
+		else if(GameStates[CurrentState] != null) GameStates[CurrentState].Update();
 	}
 	
 	public void Draw(Graphics2D Renderer){						//Draw Function calls Current State's Draw Function
-		GameStates[CurrentState].Draw(Renderer);
+		if(GameStates[CurrentState] != null){
+			GameStates[CurrentState].Draw(Renderer);
+			if(Paused) PauseState.Draw(Renderer);
+		}
+		else{
+			Renderer.setColor(Color.BLACK);
+			Renderer.fillRect(0, 0, GamePanel.WIDTH, GamePanel.HEIGHT);
+		}
 	}
 	
 	public void SetActiveGameState(int GameStateID){			//Sets the Current Game State according to identifier
 		UnloadState(CurrentState);								//Sets the old one to null
 		CurrentState = GameStateID;								//Sets the Current Game State ID to the inputed one
 		LoadState(GameStateID);									//Loads that Game State
+	}
+	
+	public void SetPaused(boolean p){
+		Paused = p;
 	}
 	
 	

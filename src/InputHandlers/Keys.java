@@ -42,7 +42,7 @@ public class Keys {												//Class meant to Handle Key Events
 	}
 	
 	public static boolean isPressed(int i) {					//Tells if the key is pressed
-		return KeyState[i];
+		return KeyState[i] && !PrevKeyState[i];
 	}
 	
 	public static boolean anyKeyPress() {						//Looks to see if any key is pressed

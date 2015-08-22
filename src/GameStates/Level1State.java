@@ -83,12 +83,12 @@ public class Level1State extends GameState{							//Not Fully Devloped, Just a b
 
 	@Override
 	public void HandleInput() {
-		if(Keys.isPressed(Keys.RIGHT)){
+		if(Keys.KeyState[Keys.RIGHT]){
 			vx = 5;
 		} else if(vx > 0){
 			vx = 0;
 		}
-		if(Keys.isPressed(Keys.LEFT)){
+		if(Keys.KeyState[Keys.LEFT]){
 			vx = -5;
 		} else if(vx < 0){
 			vx = 0;
@@ -97,9 +97,9 @@ public class Level1State extends GameState{							//Not Fully Devloped, Just a b
 			inAir = true;
 			vy = 15;
 		}
-//		if(Keys.isPressed(Keys.DOWN)){
-//			
-//		}
+		if(Keys.isPressed(Keys.ESCAPE)){
+			Manager.SetPaused(true);
+		}
 	}
 
 }
