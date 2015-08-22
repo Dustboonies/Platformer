@@ -7,6 +7,7 @@ import java.io.File;
 
 import javax.imageio.ImageIO;
 
+import BitMask.BitMask;
 import InputHandlers.Keys;
 import Main.GamePanel;
 
@@ -15,6 +16,7 @@ public class Level1State extends GameState{							//Not Fully Developed, Just a 
 	private int x, y, vx, vy;
 	private Rectangle Ball, Stage, Thingy;
 	private boolean inAir;
+	private BitMask BitMask;
 	private Rectangle[] Rects = new Rectangle[2];
 	public static int BALL_HEIGHT = 30, BALL_WIDTH = 30;
 	private BufferedImage Image;
@@ -39,6 +41,7 @@ public class Level1State extends GameState{							//Not Fully Developed, Just a 
 	public void Init() {
 		try{
 			Image = ImageIO.read(new File("Images/Map.png"));
+			BitMask = new BitMask(Image);
 		} catch(Exception e){
 			
 		}
@@ -47,31 +50,53 @@ public class Level1State extends GameState{							//Not Fully Developed, Just a 
 
 	@Override
 	public void Update() {
+		boolean hitNorm = false, hitSmall = false;
 		x += vx;
-		Ball = new Rectangle(x, y, BALL_WIDTH, BALL_HEIGHT);
-		for(Rectangle rect: Rects){
-			if(Ball.intersects(rect)){
-				if(vx < 0){											//Intersecting from Right
-					x = rect.x + rect.width;
-				} else if(vx > 0){									//Intersecting from Left
-					x = rect.x - BALL_WIDTH;
+		for(int i = x; i < x+30; i++){
+			for(int j = y; j < y+30; j++){
+				if(i >= 0 && i < 800)
+				if(BitMask.Solid[i][j]){
+					if(j < y + BALL_HEIGHT-4){
+						hitNorm = true;
+						hitSmall = true;
+					} else {
+						hitNorm = true;
+					}
 				}
 			}
 		}
+		if(hitNorm && hitSmall){
+			if(vx < 0){											//Intersecting from Right
+				x = x+1;
+			} else if(vx > 0){									//Intersecting from Left
+				x = x - BALL_WIDTH-1;
+			}
+		} else if(hitNorm && !hitSmall){
+			int numMoveUp = 0;
+			for(int j = y; j < y+BALL_HEIGHT; j++){
+				if(BitMask.Solid[x][j]){
+					numMoveUp++;
+				}
+			}
+			y-=numMoveUp;
+		}
+		
 		
 		if (x < 0) x = 0;
 		if(x + BALL_WIDTH > GamePanel.WIDTH) x = GamePanel.WIDTH - BALL_WIDTH;
 		
 		y -= vy;
 		Ball = new Rectangle(x, y, BALL_WIDTH, BALL_HEIGHT);
-		for(Rectangle rect: Rects){
-			if(Ball.intersects(rect)){
-				if(vy < 0){											//Intersecting from Above
-					y = rect.y - BALL_HEIGHT;
-					inAir = false;
-				} else if(vy > 0){									//Intersecting from Below
-					y = rect.y + rect.height;
-					vy = 0;
+		for(int i = x; i < x+BALL_WIDTH; i++){
+			for(int j = y; j < y+BALL_HEIGHT; j++){
+				if(BitMask.Solid[i][j]){
+					if(vy < 0){											//Intersecting from Above
+						y = j - BALL_HEIGHT;
+						inAir = false;
+					} else if(vy > 0){									//Intersecting from Below
+						y = j + 1;
+						vy = 0;
+					}
 				}
 			}
 		}		
@@ -88,9 +113,8 @@ public class Level1State extends GameState{							//Not Fully Developed, Just a 
 
 	@Override
 	public void Draw(Graphics2D g) {
-//		if(Image != null) g.drawImage(Image, 0, 0, null);
+		if(Image != null) g.drawImage(Image, 0, 0, null);
 		g.fillOval(x, y, BALL_WIDTH, BALL_HEIGHT);
-		g.fillRect(Thingy.x, Thingy.y, Thingy.width, Thingy.height);		
 	}
 
 	@Override
