@@ -14,7 +14,7 @@ import Main.GamePanel;
 public class Level1State extends GameState{							//Not Fully Developed, Just a bouncing ball
 
 	private int x, y, vx, vy;
-	private Rectangle Ball, Stage, Thingy;
+	private Rectangle Stage, Thingy;
 	private boolean inAir;
 	private BitMask BitMask;
 	private Rectangle[] Rects = new Rectangle[2];
@@ -62,16 +62,18 @@ public class Level1State extends GameState{							//Not Fully Developed, Just a 
 					} else {
 						hitNorm = true;
 					}
+					if(hitNorm && hitSmall){
+						if(vx < 0){											//Intersecting from Right
+							x = i+1;
+						} else if(vx > 0){									//Intersecting from Left
+							x = i - BALL_WIDTH;
+						}
+					}
 				}
 			}
 		}
-		if(hitNorm && hitSmall){
-			if(vx < 0){											//Intersecting from Right
-				x = x+1;
-			} else if(vx > 0){									//Intersecting from Left
-				x = x - BALL_WIDTH-1;
-			}
-		} else if(hitNorm && !hitSmall){
+
+		if(hitNorm && !hitSmall){
 			int numMoveUp = 0;
 			for(int j = y; j < y+BALL_HEIGHT; j++){
 				if(BitMask.Solid[x][j]){
@@ -85,11 +87,13 @@ public class Level1State extends GameState{							//Not Fully Developed, Just a 
 		if (x < 0) x = 0;
 		if(x + BALL_WIDTH > GamePanel.WIDTH) x = GamePanel.WIDTH - BALL_WIDTH;
 		
+		boolean hitSomething = false;
+		
 		y -= vy;
-		Ball = new Rectangle(x, y, BALL_WIDTH, BALL_HEIGHT);
 		for(int i = x; i < x+BALL_WIDTH; i++){
 			for(int j = y; j < y+BALL_HEIGHT; j++){
 				if(BitMask.Solid[i][j]){
+					hitSomething = true;
 					if(vy < 0){											//Intersecting from Above
 						y = j - BALL_HEIGHT;
 						inAir = false;
@@ -101,12 +105,13 @@ public class Level1State extends GameState{							//Not Fully Developed, Just a 
 			}
 		}		
 
+		if(!hitSomething) inAir = true;
+		else inAir = false;
+		
 		if (y < 0) y = 0;
 		if(y + BALL_HEIGHT > GamePanel.HEIGHT) y = GamePanel.HEIGHT - BALL_HEIGHT;
 		
 		if(inAir) vy -= 1;
-		
-		Ball = new Rectangle(x, y, BALL_WIDTH, BALL_HEIGHT);
 		
 		HandleInput();
 	}
