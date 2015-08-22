@@ -2,6 +2,10 @@ package GameStates;
 
 import java.awt.Graphics2D;
 import java.awt.Rectangle;
+import java.awt.image.BufferedImage;
+import java.io.File;
+
+import javax.imageio.ImageIO;
 
 import InputHandlers.Keys;
 import Main.GamePanel;
@@ -13,11 +17,12 @@ public class Level1State extends GameState{							//Not Fully Developed, Just a 
 	private boolean inAir;
 	private Rectangle[] Rects = new Rectangle[2];
 	public static int BALL_HEIGHT = 30, BALL_WIDTH = 30;
+	private BufferedImage Image;
 	
 	public Level1State(GameStateManager gsm) {
 		super(gsm);
 		x = (GamePanel.WIDTH - BALL_WIDTH)/2;
-		y = GamePanel.HEIGHT - BALL_HEIGHT;
+		y = 0;
 		
 		Stage = new Rectangle(0, GamePanel.HEIGHT, GamePanel.WIDTH, 10);
 		Rects[0] = Stage;
@@ -25,12 +30,18 @@ public class Level1State extends GameState{							//Not Fully Developed, Just a 
 		Thingy = new Rectangle(50, GamePanel.HEIGHT-100, 100, 50);
 		Rects[1] = Thingy;
 		
-		inAir = false;
+		inAir = true;
+		
+		Init();
 	}
 
 	@Override
 	public void Init() {
-		
+		try{
+			Image = ImageIO.read(new File("Images/Map.png"));
+		} catch(Exception e){
+			
+		}
 		
 	}
 
@@ -40,10 +51,10 @@ public class Level1State extends GameState{							//Not Fully Developed, Just a 
 		Ball = new Rectangle(x, y, BALL_WIDTH, BALL_HEIGHT);
 		for(Rectangle rect: Rects){
 			if(Ball.intersects(rect)){
-				if(vx > 0){											//Intersecting from Right
-					x = rect.x - BALL_WIDTH;
-				} else if(vx < 0){									//Intersecting from Left
+				if(vx < 0){											//Intersecting from Right
 					x = rect.x + rect.width;
+				} else if(vx > 0){									//Intersecting from Left
+					x = rect.x - BALL_WIDTH;
 				}
 			}
 		}
@@ -77,8 +88,9 @@ public class Level1State extends GameState{							//Not Fully Developed, Just a 
 
 	@Override
 	public void Draw(Graphics2D g) {
+//		if(Image != null) g.drawImage(Image, 0, 0, null);
 		g.fillOval(x, y, BALL_WIDTH, BALL_HEIGHT);
-		g.fillRect(Thingy.x, Thingy.y, Thingy.width, Thingy.height);
+		g.fillRect(Thingy.x, Thingy.y, Thingy.width, Thingy.height);		
 	}
 
 	@Override
