@@ -1,12 +1,18 @@
 package Entities;
 
-import java.awt.Rectangle;
-
 public class Player extends Entity{
 	
-	private int EposX, EposY, Ewidth, Eheight, hp, attack, exp;
-	private boolean inAir;
-	private Rectangle character;
+	private int HP;
+	public static int WIDTH = 30, HEIGHT = 30;
+	
+	public Player(int x, int y) {
+		super(x, y, WIDTH, HEIGHT);
+		HP = 100;
+	}
+	
+	public int getHP(){
+		return HP;
+	}
 	
 	
 }

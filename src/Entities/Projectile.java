@@ -1,11 +1,19 @@
 package Entities;
 
-import java.awt.Rectangle;
+public class Projectile extends Entity{
 
-public class Projectile {
+	private boolean friendly;
 	
-	private int attack, EposX, EposY, Ewidth, Eheigth;
-	private Rectangle projectile;
+	public Projectile(int x, int y, int w, int h) {
+		super(x, y, w, h);
+	}
 	
+	public void SetFriendly(boolean b){
+		friendly = b;
+	}
+	
+	public boolean GetFriendly(){
+		return friendly;
+	}
 
 }
