@@ -89,29 +89,32 @@ public class Level1State extends GameState{							//Not Fully Developed, Just a 
 		if (x < 0) x = 0;
 		if(x + BALL_WIDTH > GamePanel.WIDTH) x = GamePanel.WIDTH - BALL_WIDTH;
 		
-		boolean hitSomething = false;
+		boolean hitSomethingBelow = false;
 		
 		y -= vy;
 		for(int i = x; i < x+BALL_WIDTH; i++){
 			for(int j = y; j < y+BALL_HEIGHT; j++){
+				if(j >= 0 && j < 600)
 				if(BitMask.Solid[i][j]){
-					hitSomething = true;
 					if(vy < 0){											//Intersecting from Above
 						y = j - BALL_HEIGHT;
+						hitSomethingBelow = true;
 						inAir = false;
 					} else if(vy > 0){									//Intersecting from Below
 						y = j + 1;
-						vy = 0;
 					}
 				}
 			}
 		}		
 
-		if(!hitSomething) inAir = true;
+		if(!hitSomethingBelow) inAir = true;
 		else inAir = false;
 		
 		if (y < 0) y = 0;
-		if(y + BALL_HEIGHT > GamePanel.HEIGHT) y = GamePanel.HEIGHT - BALL_HEIGHT;
+		if(y + BALL_HEIGHT > GamePanel.HEIGHT){
+			y = GamePanel.HEIGHT - BALL_HEIGHT;
+			inAir = false;
+		}
 		
 		if(inAir) vy -= 1;
 		
