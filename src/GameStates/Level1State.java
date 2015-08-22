@@ -98,8 +98,9 @@ public class Level1State extends GameState{							//Not Fully Developed, Just a 
 						y = j - BALL_HEIGHT;
 						hitSomethingBelow = true;
 						inAir = false;
-					} else if(vy > 0){									//Intersecting from Below
+					} else if(vy >= 0){									//Intersecting from Below
 						y = j + 1;
+						vy = 0;
 					}
 				}
 			}
