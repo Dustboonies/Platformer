@@ -13,6 +13,7 @@ import Main.GamePanel;
 
 public class Level1State extends GameState{							//Not Fully Developed, Just a bouncing ball
 
+	private int numSecs;
 	private int x, y, vx, vy;
 	private Rectangle Stage, Thingy;
 	private boolean inAir;
@@ -50,6 +51,7 @@ public class Level1State extends GameState{							//Not Fully Developed, Just a 
 
 	@Override
 	public void Update() {
+		if(numSecs > 0) numSecs--;
 		boolean hitNorm = false, hitSmall = false;
 		x += vx;
 		for(int i = x; i < x+30; i++){
@@ -76,6 +78,7 @@ public class Level1State extends GameState{							//Not Fully Developed, Just a 
 		if(hitNorm && !hitSmall){
 			int numMoveUp = 0;
 			for(int j = y; j < y+BALL_HEIGHT; j++){
+				if(x >= 0 && x < 800)
 				if(BitMask.Solid[x][j]){
 					numMoveUp++;
 				}
@@ -140,7 +143,11 @@ public class Level1State extends GameState{							//Not Fully Developed, Just a 
 		}
 		if(Keys.isPressed(Keys.SPACE) && !inAir){
 			inAir = true;
-			vy = 15;
+			vy = 10;
+			numSecs = 10;
+		}
+		if(Keys.KeyState[Keys.SPACE] && inAir && numSecs > 0){
+			vy = 10;
 		}
 		if(Keys.isPressed(Keys.ESCAPE)){
 			Manager.SetPaused(true);

@@ -60,14 +60,14 @@ public class GamePanel extends JPanel implements KeyListener{
 
 	@Override
 	public void keyPressed(KeyEvent Key) {
-		System.out.println("keyPressed="+KeyEvent.getKeyText(Key.getKeyCode()));
+		//System.out.println("keyPressed="+KeyEvent.getKeyText(Key.getKeyCode()));
 		
 		Keys.keySet(Key.getKeyCode(), true);//Give Key Handler the Key Code
 	}
 
 	@Override
 	public void keyReleased(KeyEvent Key) {
-		System.out.println("keyReleased="+KeyEvent.getKeyText(Key.getKeyCode()));
+		//System.out.println("keyReleased="+KeyEvent.getKeyText(Key.getKeyCode()));
 		
 		Keys.keySet(Key.getKeyCode(), false);//Give Key Handler the Key Code
 
