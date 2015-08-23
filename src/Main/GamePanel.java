@@ -14,8 +14,8 @@ import javax.swing.JPanel;
 public class GamePanel extends JPanel implements KeyListener{
 	
 	//Dimensions of the Panel
-	public static final int WIDTH = 800;	//The Width of our panel
-	public static final int HEIGHT = 600; 	//The Height of our panel
+	public static final int WIDTH = 500;	//The Width of our panel
+	public static final int HEIGHT = 400; 	//The Height of our panel
 	public static final int SCALING = 1;	//The Scaling of our panel
 	
 	int x = 0;

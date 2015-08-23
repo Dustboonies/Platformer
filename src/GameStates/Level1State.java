@@ -1,5 +1,6 @@
 package GameStates;
 
+import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
@@ -13,19 +14,36 @@ import Main.GamePanel;
 
 public class Level1State extends GameState{							//Not Fully Developed, Just a bouncing ball
 
-	private int numSecs;
+	private int numSecs, numFrames;
 	private double x, y, vx, vy;
-	private Rectangle Stage, Thingy;
-	private boolean inAir;
-	private BitMask BitMask;
+	private int LEVEL_WIDTH, LEVEL_HEIGHT;
+	private Rectangle Stage, Thingy, Camera;
+	private boolean inAir, wasHittingSomething;
+	private BitMask Bitmask;
 	private Rectangle[] Rects = new Rectangle[2];
 	public static int BALL_HEIGHT = 30, BALL_WIDTH = 30;
-	public BufferedImage Image;
+	public BufferedImage Foreground, GeometryMap, LevelMap;
 	
 	public Level1State(GameStateManager gsm) {
 		super(gsm);
 		x = (GamePanel.WIDTH - BALL_WIDTH)/2;
 		y = 0;
+		
+		LEVEL_WIDTH = 640;
+		LEVEL_HEIGHT = 480;
+		
+		Camera = new Rectangle(0, 0, GamePanel.WIDTH, GamePanel.HEIGHT);
+		
+		int cx = ((int)x+BALL_WIDTH/2)-GamePanel.WIDTH/2;
+		int cy = ((int)y+BALL_HEIGHT/2)-GamePanel.HEIGHT/2;
+		
+		if(cx < 0) cx = 0;
+		if(cx + GamePanel.WIDTH > LEVEL_WIDTH) cx = LEVEL_WIDTH - GamePanel.WIDTH;
+		if(cy < 0) cy = 0;
+		if(cy + GamePanel.HEIGHT > LEVEL_HEIGHT) cy = LEVEL_HEIGHT - GamePanel.HEIGHT;
+		
+		Camera.x = cx;
+		Camera.y = cy;
 		
 		Stage = new Rectangle(0, GamePanel.HEIGHT, GamePanel.WIDTH, 10);
 		Rects[0] = Stage;
@@ -41,8 +59,10 @@ public class Level1State extends GameState{							//Not Fully Developed, Just a 
 	@Override
 	public void Init() {
 		try{
-			Image = ImageIO.read(new File("Images/level1.png"));
-			BitMask = new BitMask(Image);
+//			Background = ImageIO.read(new File("Images/Background.png"));
+			Foreground = ImageIO.read(new File("Images/Foreground.png"));
+			GeometryMap = ImageIO.read(new File("Images/GeometryMap.png"));
+			Bitmask = new BitMask(GeometryMap, LEVEL_WIDTH, LEVEL_HEIGHT);
 		} catch(Exception e){
 			
 		}
@@ -52,12 +72,13 @@ public class Level1State extends GameState{							//Not Fully Developed, Just a 
 	@Override
 	public void Update() {
 		if(numSecs > 0) numSecs--;
+		if(numFrames > 0) numFrames--;
 		boolean hitNorm = false, hitSmall = false;
 		x += vx;
 		for(int i = (int)x; i < x+30; i++){
 			for(int j = (int)y; j < y+30; j++){
-				if(i >= 0 && i < 800)
-				if(BitMask.Solid[i][j]){
+				if(i >= 0 && i < LEVEL_WIDTH)
+				if(Bitmask.Solid[i][j]){
 					if(j < y + BALL_HEIGHT-4){
 						hitNorm = true;
 						hitSmall = true;
@@ -78,8 +99,8 @@ public class Level1State extends GameState{							//Not Fully Developed, Just a 
 		if(hitNorm && !hitSmall){
 			int numMoveUp = 0;
 			for(int j = (int)y; j < y+BALL_HEIGHT; j++){
-				if(x >= 0 && x < 800)
-				if(BitMask.Solid[(int)x][j]){
+				if(x >= 0 && x < LEVEL_WIDTH)
+				if(Bitmask.Solid[(int)x][j]){
 					numMoveUp++;
 				}
 			}
@@ -88,19 +109,20 @@ public class Level1State extends GameState{							//Not Fully Developed, Just a 
 		
 		
 		if (x < 0) x = 0;
-		if(x + BALL_WIDTH > GamePanel.WIDTH) x = GamePanel.WIDTH - BALL_WIDTH;
+		if(x + BALL_WIDTH > LEVEL_WIDTH) x = LEVEL_WIDTH - BALL_WIDTH;
 		
 		boolean hitSomethingBelow = false;
 		
 		y -= vy;
 		for(int i = (int)x; i < x+BALL_WIDTH; i++){
 			for(int j = (int)y; j < y+BALL_HEIGHT; j++){
-				if(j >= 0 && j < 600)
-				if(BitMask.Solid[i][j]){
+				if(j >= 0 && j < LEVEL_HEIGHT)
+				if(Bitmask.Solid[i][j]){
 					if(vy < 0){											//Intersecting from Above
 						y = j - BALL_HEIGHT;
 						vy = -0.5;
 						hitSomethingBelow = true;
+						wasHittingSomething = true;
 						inAir = false;
 					} else if(vy >= 0){									//Intersecting from Below
 						y = j + 1;
@@ -110,27 +132,46 @@ public class Level1State extends GameState{							//Not Fully Developed, Just a 
 			}
 		}		
 
-		if(!hitSomethingBelow) inAir = true;
+		if(!hitSomethingBelow){
+			inAir = true;
+			if(wasHittingSomething) numFrames = 10;
+			wasHittingSomething = false;
+		}
 		else inAir = false;
 		
 		if (y < 0){
 			y = 0;
 			vy = -1;
 		}
-		if(y + BALL_HEIGHT > GamePanel.HEIGHT){
-			y = GamePanel.HEIGHT - BALL_HEIGHT;
+		if(y + BALL_HEIGHT > LEVEL_HEIGHT){
+			y = LEVEL_HEIGHT - BALL_HEIGHT;
 			inAir = false;
 		}
 		
 		if(inAir) vy -= 0.5;
+		
+		int cx = ((int)x+BALL_WIDTH/2)-GamePanel.WIDTH/2;
+		int cy = ((int)y+BALL_HEIGHT/2)-GamePanel.HEIGHT/2;
+		
+		if(cx < 0) cx = 0;
+		if(cx + GamePanel.WIDTH > LEVEL_WIDTH) cx = LEVEL_WIDTH - GamePanel.WIDTH;
+		if(cy < 0) cy = 0;
+		if(cy + GamePanel.HEIGHT > LEVEL_HEIGHT) cy = LEVEL_HEIGHT - GamePanel.HEIGHT;
+		
+		Camera.x = cx;
+		Camera.y = cy;
 		
 		HandleInput();
 	}
 
 	@Override
 	public void Draw(Graphics2D g) {
-		if(Image != null) g.drawImage(Image, 0, 0, null);
-		g.fillOval((int)x, (int)y, BALL_WIDTH, BALL_HEIGHT);
+//		if(Background != null) g.drawImage(Background.getSubimage(Camera.x, Camera.y, Camera.width, Camera.height), 0, 0, null);
+		g.setColor(Color.GRAY);
+		g.fillRect(0, 0, GamePanel.WIDTH, GamePanel.HEIGHT);
+		g.setColor(Color.BLACK);
+		g.fillOval((int)x - Camera.x, (int)y - Camera.y, BALL_WIDTH, BALL_HEIGHT);
+		if(Foreground != null) g.drawImage(Foreground.getSubimage(Camera.x, Camera.y, Camera.width, Camera.height), 0, 0, null);
 	}
 
 	@Override
@@ -145,13 +186,13 @@ public class Level1State extends GameState{							//Not Fully Developed, Just a 
 		} else if(vx < 0){
 			vx = 0;
 		}
-		if(Keys.isPressed(Keys.SPACE) && !inAir){
+		if(Keys.isPressed(Keys.SPACE) && (!inAir || numFrames > 0)){
 			inAir = true;
-			vy = 11;
+			vy = 9;
 			numSecs = 10;
 		}
 		if(Keys.KeyState[Keys.SPACE] && inAir && numSecs > 0){
-			vy = 11;
+			vy = 9;
 		}
 		if(Keys.isPressed(Keys.ESCAPE)){
 			Manager.SetPaused(true);
