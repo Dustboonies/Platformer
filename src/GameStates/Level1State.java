@@ -113,7 +113,10 @@ public class Level1State extends GameState{							//Not Fully Developed, Just a 
 		if(!hitSomethingBelow) inAir = true;
 		else inAir = false;
 		
-		if (y < 0) y = 0;
+		if (y < 0){
+			y = 0;
+			vy = -1;
+		}
 		if(y + BALL_HEIGHT > GamePanel.HEIGHT){
 			y = GamePanel.HEIGHT - BALL_HEIGHT;
 			inAir = false;
