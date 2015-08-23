@@ -14,7 +14,7 @@ import Main.GamePanel;
 public class Level1State extends GameState{							//Not Fully Developed, Just a bouncing ball
 
 	private int numSecs;
-	private int x, y, vx, vy;
+	private double x, y, vx, vy;
 	private Rectangle Stage, Thingy;
 	private boolean inAir;
 	private BitMask BitMask;
@@ -54,8 +54,8 @@ public class Level1State extends GameState{							//Not Fully Developed, Just a 
 		if(numSecs > 0) numSecs--;
 		boolean hitNorm = false, hitSmall = false;
 		x += vx;
-		for(int i = x; i < x+30; i++){
-			for(int j = y; j < y+30; j++){
+		for(int i = (int)x; i < x+30; i++){
+			for(int j = (int)y; j < y+30; j++){
 				if(i >= 0 && i < 800)
 				if(BitMask.Solid[i][j]){
 					if(j < y + BALL_HEIGHT-4){
@@ -77,9 +77,9 @@ public class Level1State extends GameState{							//Not Fully Developed, Just a 
 
 		if(hitNorm && !hitSmall){
 			int numMoveUp = 0;
-			for(int j = y; j < y+BALL_HEIGHT; j++){
+			for(int j = (int)y; j < y+BALL_HEIGHT; j++){
 				if(x >= 0 && x < 800)
-				if(BitMask.Solid[x][j]){
+				if(BitMask.Solid[(int)x][j]){
 					numMoveUp++;
 				}
 			}
@@ -93,12 +93,13 @@ public class Level1State extends GameState{							//Not Fully Developed, Just a 
 		boolean hitSomethingBelow = false;
 		
 		y -= vy;
-		for(int i = x; i < x+BALL_WIDTH; i++){
-			for(int j = y; j < y+BALL_HEIGHT; j++){
+		for(int i = (int)x; i < x+BALL_WIDTH; i++){
+			for(int j = (int)y; j < y+BALL_HEIGHT; j++){
 				if(j >= 0 && j < 600)
 				if(BitMask.Solid[i][j]){
 					if(vy < 0){											//Intersecting from Above
 						y = j - BALL_HEIGHT;
+						vy = -0.5;
 						hitSomethingBelow = true;
 						inAir = false;
 					} else if(vy >= 0){									//Intersecting from Below
@@ -118,7 +119,7 @@ public class Level1State extends GameState{							//Not Fully Developed, Just a 
 			inAir = false;
 		}
 		
-		if(inAir) vy -= 1;
+		if(inAir) vy -= 0.5;
 		
 		HandleInput();
 	}
@@ -126,7 +127,7 @@ public class Level1State extends GameState{							//Not Fully Developed, Just a 
 	@Override
 	public void Draw(Graphics2D g) {
 		if(Image != null) g.drawImage(Image, 0, 0, null);
-		g.fillOval(x, y, BALL_WIDTH, BALL_HEIGHT);
+		g.fillOval((int)x, (int)y, BALL_WIDTH, BALL_HEIGHT);
 	}
 
 	@Override
@@ -143,11 +144,11 @@ public class Level1State extends GameState{							//Not Fully Developed, Just a 
 		}
 		if(Keys.isPressed(Keys.SPACE) && !inAir){
 			inAir = true;
-			vy = 10;
+			vy = 11;
 			numSecs = 10;
 		}
 		if(Keys.KeyState[Keys.SPACE] && inAir && numSecs > 0){
-			vy = 10;
+			vy = 11;
 		}
 		if(Keys.isPressed(Keys.ESCAPE)){
 			Manager.SetPaused(true);
