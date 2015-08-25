@@ -6,10 +6,4 @@ public class MeleeWeapon extends Weapon{
 	
 	private Rectangle hitbox;
 	
-	
-	
-	public void getImage(MeleeWeapon m){
-		
-	}
-	
 }
