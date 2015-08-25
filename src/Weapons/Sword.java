@@ -16,7 +16,7 @@ public class Sword extends MeleeWeapon{
 		currentWeapon = new Sword();
 	}
 	public BufferedImage getImage(){
-		if (isAttacking ==true){
+		if (isAttacking !=true){
 			try{
 				weaponImage = ImageIO.read(new File("Images/Weapons/Sword.png"));
 			}

@@ -16,7 +16,7 @@ public class Fist extends MeleeWeapon{
 		currentWeapon = new Fist();
 	}
 	public BufferedImage getImage(){
-		if (isAttacking ==true){
+		if (isAttacking !=true){
 			try{
 				weaponImage = ImageIO.read(new File("Images/Weapons/Fist.png"));
 			}
