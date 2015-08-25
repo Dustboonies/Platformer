@@ -197,6 +197,9 @@ public class Level1State extends GameState{							//Not Fully Developed, Just a 
 		if(Keys.isPressed(Keys.ESCAPE)){
 			Manager.SetPaused(true);
 		}
+//		if(Keys.isPressed(Keys.R)){									//Attack "if" statement, will enable once I finish other necessary methods
+//			
+//		}
 	}
 
 }
