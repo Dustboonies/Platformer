@@ -1,5 +1,6 @@
 package Weapons;
 
+import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
 
 public class Weapon {
@@ -10,6 +11,7 @@ public class Weapon {
 	public BufferedImage weaponImage;
 	public BufferedImage weaponImageAttack;
 	public boolean isAttacking;
+	private Rectangle hitbox;
 	
 	
 	public void setWeapon(){
@@ -18,6 +20,10 @@ public class Weapon {
 	
 	public void Draw(){
 		
+	}
+	
+	public Rectangle getHitbox(){
+		return currentWeapon.getHitbox();
 	}
 	
 	public Weapon getWeapon(){
