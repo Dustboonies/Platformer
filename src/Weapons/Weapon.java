@@ -8,6 +8,9 @@ public class Weapon {
 	double atkspeed;
 	public MeleeWeapon currentWeapon;
 	public BufferedImage weaponImage;
+	public BufferedImage weaponImageAttack;
+	public boolean isAttacking;
+	
 	
 	public void setWeapon(){
 		

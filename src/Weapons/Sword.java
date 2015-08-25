@@ -16,12 +16,23 @@ public class Sword extends MeleeWeapon{
 		currentWeapon = new Sword();
 	}
 	public BufferedImage getImage(){
-		try{
-			weaponImage = ImageIO.read(new File("Images/Weapons/Sword.png"));
+		if (isAttacking ==true){
+			try{
+				weaponImage = ImageIO.read(new File("Images/Weapons/Sword.png"));
+			}
+			catch (Exception e){
+				
+			}
+			return weaponImage;
 		}
-		catch (Exception e){
-			
+		else{
+			try{
+				weaponImageAttack = ImageIO.read(new File("Images/Weapons/SwordAttack.png"));
+			}
+			catch (Exception e){
+				
+			}
+			return weaponImageAttack;
 		}
-		return weaponImage;
 	}
 }

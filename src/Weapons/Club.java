@@ -16,13 +16,24 @@ public class Club extends MeleeWeapon{
 		currentWeapon = new Club();
 	}
 	public BufferedImage getImage(){
-		try{
-			weaponImage = ImageIO.read(new File("Images/Weapons/Club.png"));
+		if (isAttacking ==true){
+			try{
+				weaponImage = ImageIO.read(new File("Images/Weapons/Club.png"));
+			}
+			catch (Exception e){
+				
+			}
+			return weaponImage;
 		}
-		catch (Exception e){
-			
+		else{
+			try{
+				weaponImageAttack = ImageIO.read(new File("Images/Weapons/ClubAttack.png"));
+			}
+			catch (Exception e){
+				
+			}
+			return weaponImageAttack;
 		}
-		return weaponImage;
 	}
 	
 	

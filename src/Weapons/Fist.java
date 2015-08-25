@@ -16,13 +16,24 @@ public class Fist extends MeleeWeapon{
 		currentWeapon = new Fist();
 	}
 	public BufferedImage getImage(){
-		try{
-			weaponImage = ImageIO.read(new File("Images/Weapons/Fist.png"));
+		if (isAttacking ==true){
+			try{
+				weaponImage = ImageIO.read(new File("Images/Weapons/Fist.png"));
+			}
+			catch (Exception e){
+				
+			}
+			return weaponImage;
 		}
-		catch (Exception e){
-			
+		else{
+			try{
+				weaponImageAttack = ImageIO.read(new File("Images/Weapons/FistAttack.png"));
+			}
+			catch (Exception e){
+				
+			}
+			return weaponImageAttack;
 		}
-		return weaponImage;
 	}
 	
 }
