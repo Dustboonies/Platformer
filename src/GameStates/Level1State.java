@@ -9,6 +9,7 @@ import java.io.File;
 import javax.imageio.ImageIO;
 
 import BitMask.BitMask;
+import Entities.Player;
 import InputHandlers.Keys;
 import Main.GamePanel;
 
@@ -23,6 +24,8 @@ public class Level1State extends GameState{							//Not Fully Developed, Just a 
 	private Rectangle[] Rects = new Rectangle[2];
 	public static int CHARACTER_HEIGHT = 34, CHARACTER_WIDTH = 34;
 	public static BufferedImage Foreground, GeometryMap, LevelMap, Sprite;
+	
+	private Player player;
 	
 	public Level1State(GameStateManager gsm) {
 		super(gsm);
@@ -67,6 +70,8 @@ public class Level1State extends GameState{							//Not Fully Developed, Just a 
 		} catch(Exception e){
 			
 		}
+		
+		player = new Player(x, y, vx, vy, Sprite);
 		
 	}
 
@@ -173,28 +178,32 @@ public class Level1State extends GameState{							//Not Fully Developed, Just a 
 //		g.setColor(Color.WHITE);
 //		g.fillOval((int)x - Camera.x, (int)y - Camera.y, CHARACTER_WIDTH, CHARACTER_HEIGHT);
 		if(Sprite != null) g.drawImage(Sprite, (int)x - Camera.x, (int)y - Camera.y, CHARACTER_WIDTH, CHARACTER_HEIGHT, null);
+		
+//	NOTE: comment previous line and uncomment subsequent line when player movement is sorted out
+		
+//		player.drawPlayer(g, Camera);
 		if(Foreground != null) g.drawImage(Foreground.getSubimage(Camera.x, Camera.y, Camera.width, Camera.height), 0, 0, null);
 	}
 
 	@Override
 	public void HandleInput() {
 		if(Keys.KeyState[Keys.RIGHT]){
-			vx = 5;
+			vx = 3;
 		} else if(vx > 0){
 			vx = 0;
 		}
 		if(Keys.KeyState[Keys.LEFT]){
-			vx = -5;
+			vx = -3;
 		} else if(vx < 0){
 			vx = 0;
 		}
 		if(Keys.isPressed(Keys.SPACE) && (!inAir || numFrames > 0)){
 			inAir = true;
-			vy = 9;
+			vy = 7;
 			numSecs = 10;
 		}
 		if(Keys.KeyState[Keys.SPACE] && inAir && numSecs > 0){
-			vy = 9;
+			vy = 7;
 		}
 		if(Keys.isPressed(Keys.ESCAPE)){
 			Manager.SetPaused(true);

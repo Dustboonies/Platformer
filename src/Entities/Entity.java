@@ -1,37 +1,45 @@
 package Entities;
 
 import java.awt.Rectangle;
+import java.awt.image.BufferedImage;
 
 public class Entity {
 
-	private int x, y, Width, Height;
-	private Rectangle Box;
+	protected double x, y, vx, vy;
+	protected BufferedImage sprite;
+	protected int Width, Height;
+	protected Rectangle Box;
 		
-	public Entity (int x, int y, int w, int h){
+	public Entity (double x, double y, double vx, double vy, int w, int h, BufferedImage i){
 			this.x = x;
 			this.y = y;
+			this.vx = vx;
+			this.vy = vy;
 			Width = w;
 			Height = h;
-			Box = new Rectangle(x, y, Width, Height);
+			Box = new Rectangle((int)x, (int)y, Width, Height);
+			
+			sprite = i;
 	}
 	
-	public int getX(){
+	public double getX(){
 		return x;
 	}
 	
-	public int getY(){
+	public double getY(){
 		return y;
 	}
 	
-	public int getWidth(){
+	public double getWidth(){
 		return Width;
 	}
 	
-	public int getHeight(){
+	public double getHeight(){
 		return Height;
 	}
 	
 	public Rectangle getBox(){
 		return Box;
 	}
+	
 }
