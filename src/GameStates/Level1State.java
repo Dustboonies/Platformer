@@ -14,6 +14,7 @@ import Entities.Player;
 import Entities.Projectile;
 import InputHandlers.Keys;
 import Main.GamePanel;
+import Weapons.TestGun;
 
 public class Level1State extends GameState{
 
@@ -37,7 +38,8 @@ public class Level1State extends GameState{
 		player.setY(50);
 		player.setWidth(34);
 		player.setHeight(34);
-		player.setHasWeapon(true);
+		
+		player.setWeapon(new TestGun()); //testing
 		
 		try{
 			Foreground = ImageIO.read(new File("Images/Foreground.png"));
@@ -94,25 +96,13 @@ public class Level1State extends GameState{
 		if(Keys.isPressed(Keys.ESCAPE)){
 			Manager.SetPaused(true);
 		}
-		if(Keys.isPressed(Keys.R) && player.getHasWeapon()){
-			if(player.getFacingRight()){
-				Projectile projectile = new Projectile(player.getX() + player.getWidth() + 2, player.getY() + player.getHeight()/2, 15);
-				projectile.setWidth(10);
-				projectile.setHeight(5);
-				projectile.setHitBox();
-				projectile.setBitMask(bitmask);
-				projectiles.add(projectile);
-			} else {
-				Projectile projectile = new Projectile(player.getX() - 12, player.getY() + player.getHeight()/2, -15);
-				projectile.setWidth(10);
-				projectile.setHeight(5);
-				projectile.setHitBox();
-				projectile.setBitMask(bitmask);
-				projectiles.add(projectile);
-			}
-			
-			
+		
+		if(Keys.isPressed(Keys.R) && player.getHasWeapon()){ //attack
+			projectiles.add(player.getWeapon().rangedAttack(player.getX(), player.getY(), player.getWidth(), player.getHeight(), player.getFacingRight(), bitmask));
+			System.out.println(projectiles.size());
 		}
+		
+		
 	}
 	
 	public void UpdateCamera(){

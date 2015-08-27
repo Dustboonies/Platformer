@@ -1,11 +1,13 @@
 package Entities;
 
 import InputHandlers.Keys;
+import Weapons.Weapon;
 
 public class Player extends Entity{
 
 	private boolean inAir, wasHittingSomething, hasWeapon;
 	private int numFrames, numSecs;
+	public Weapon weapon;
 	
 	public Player(){
 		
@@ -13,6 +15,15 @@ public class Player extends Entity{
 	
 	public boolean getHasWeapon(){return hasWeapon;}
 	public void setHasWeapon(boolean hw){hasWeapon = hw;}
+	
+	public void setWeapon(Weapon w){
+		weapon = w;
+		hasWeapon = true;
+	}
+	
+	public Weapon getWeapon(){
+		return weapon;
+	}
 	
 	public void HandleInput(){
 		if(Keys.KeyState[Keys.RIGHT]){
@@ -27,12 +38,12 @@ public class Player extends Entity{
 		} else if(vx < 0){
 			vx = 0;
 		}
-		if(Keys.isPressed(Keys.SPACE) && (!inAir || numFrames > 0)){
+		if(Keys.isPressed(Keys.UP) && (!inAir || numFrames > 0)){
 			inAir = true;
 			vy = 7;
 			numSecs = 10;
 		}
-		if(Keys.KeyState[Keys.SPACE] && inAir && numSecs > 0){
+		if(Keys.KeyState[Keys.UP] && inAir && numSecs > 0){
 			vy = 7;
 		}
 	}
