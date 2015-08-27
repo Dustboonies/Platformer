@@ -5,8 +5,10 @@ import java.awt.image.BufferedImage;
 public class BitMask {
 
 	public boolean[][] Solid;
+	public int width, height;
 	
 	public BitMask(BufferedImage Image, int width, int height){
+		this.width = width; this.height = height;
 		Solid = new boolean[width][height];
 		for(int i = 0; i < width; i++){
 			for(int j = 0; j < height; j++){
