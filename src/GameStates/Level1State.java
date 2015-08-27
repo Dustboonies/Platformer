@@ -32,18 +32,7 @@ public class Level1State extends GameState{										//This is the Level 1 GameS
 		Init();																	//Initialize Function is Called
 	}
 
-	@Override
-<<<<<<< HEAD
-	public void Init() {
-		Camera = new Rectangle(0, 0, GamePanel.WIDTH, GamePanel.HEIGHT);
-		player = new Player();
-		player.setX(50);
-		player.setY(50);
-		player.setWidth(34);
-		player.setHeight(34);
-		
-		player.setWeapon(new TestGun()); //testing
-=======
+
 	public void Init() {														//Initializes our variables
 		Camera = new Rectangle(0, 0, GamePanel.WIDTH, GamePanel.HEIGHT);		//Initialize the Camera Rectangle
 		player = new Player();													//Initialize the Player
@@ -52,7 +41,7 @@ public class Level1State extends GameState{										//This is the Level 1 GameS
 		player.setWidth(34);													//Set the Player's width
 		player.setHeight(34);													//Set the Player's height
 		player.setHasWeapon(true);												//We set the Player as having a weapon for testing purposes
->>>>>>> origin/master
+		player.setWeapon(new TestGun());
 		
 		try{
 			Foreground = ImageIO.read(new File("Images/Foreground.png"));		//Initialize Foreground image which is the image we see
@@ -72,19 +61,7 @@ public class Level1State extends GameState{										//This is the Level 1 GameS
 		wasRight = false;
 	}
 
-	@Override
-<<<<<<< HEAD
-	public void Update() {
-		HandleInput();
-		player.HandleInput();
-		player.Update();
-		for(int i = 0; i < projectiles.size(); i++){
-			projectiles.get(i).Update();
 
-			if(projectiles.get(i).getRemovable() || projectiles.get(i).getX() < Camera.getMinX() || projectiles.get(i).getX() > Camera.getMaxX() ||projectiles.get(i).getY() < Camera.getMinY() || projectiles.get(i).getY() > Camera.getMaxY()){
-				projectiles.remove(i);
-				i--;
-=======
 	public void Update() {														//Every frame the GameState update
 		HandleInput();															//GameState handles key inputs
 		player.HandleInput();													//Player handles key inputs
@@ -94,7 +71,6 @@ public class Level1State extends GameState{										//This is the Level 1 GameS
 			if(!Camera.intersects(projectiles.get(i).getHitBox()) || projectiles.get(i).getRemovable()){//If projectile is off screen or hit something remove it
 				projectiles.remove(i);											//Remove the laser
 				i--;															//Go back one space to make up for lost projectile
->>>>>>> origin/master
 			}
 			
 		}
