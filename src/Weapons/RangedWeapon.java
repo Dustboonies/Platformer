@@ -11,9 +11,6 @@ public class RangedWeapon extends Weapon{
 	public int projectileHeight;
 	
 	public Projectile rangedAttack(int playerX, int playerY, int playerWidth, int playerHeight, boolean isFacingRight, BitMask b){
-
-		
-		System.out.println("rangedAttack");
 		
 		Projectile p;
 		

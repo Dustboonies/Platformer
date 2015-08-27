@@ -17,7 +17,7 @@ public class TestGun extends RangedWeapon{
 		atkspeed = .5;
 		
 		projectileWidth = 30;
-		projectileHeight = 10;
+		projectileHeight = 5;
 		
 		try {
 			weaponImage = ImageIO.read(new File("Images/Weapons/TestGun.png"));

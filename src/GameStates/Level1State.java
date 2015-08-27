@@ -64,10 +64,12 @@ public class Level1State extends GameState{
 		player.Update();
 		for(int i = 0; i < projectiles.size(); i++){
 			projectiles.get(i).Update();
-			if(!Camera.intersects(projectiles.get(i).getHitBox()) || projectiles.get(i).getRemovable()){
+
+			if(projectiles.get(i).getRemovable() || projectiles.get(i).getX() < Camera.getMinX() || projectiles.get(i).getX() > Camera.getMaxX() ||projectiles.get(i).getY() < Camera.getMinY() || projectiles.get(i).getY() > Camera.getMaxY()){
 				projectiles.remove(i);
 				i--;
 			}
+			
 		}
 		
 		if(player.getX() < 0) player.setX(0);
@@ -99,7 +101,6 @@ public class Level1State extends GameState{
 		
 		if(Keys.isPressed(Keys.R) && player.getHasWeapon()){ //attack
 			projectiles.add(player.getWeapon().rangedAttack(player.getX(), player.getY(), player.getWidth(), player.getHeight(), player.getFacingRight(), bitmask));
-			System.out.println(projectiles.size());
 		}
 		
 		
