@@ -18,7 +18,7 @@ public class GameDriver {
 		while(true){											//We want a never ending While loop
 			Game.Update();										//Game Update
 			Game.repaint();										//Game Paints it on screen
-			Thread.sleep(10);									//Wait 10 ms to go again
+			Thread.sleep(1000 / 60);							//Give the Game 60 FPS
 		}
 		
 	}

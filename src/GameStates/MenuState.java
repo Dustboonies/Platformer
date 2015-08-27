@@ -56,7 +56,7 @@ public class MenuState extends GameState{
 		FontMetrics fm = g.getFontMetrics();
 		java.awt.geom.Rectangle2D rect = fm.getStringBounds(Title, g);
 		int x = (GamePanel.WIDTH - (int)(rect.getWidth()))/2;
-		int y = 220;
+		int y = (GamePanel.HEIGHT - (int)(rect.getHeight()))/2;
 		g.drawString(Title, x, y);
 		
 		
@@ -68,12 +68,12 @@ public class MenuState extends GameState{
 		//draw Start
 		rect = fm.getStringBounds(Start, g);
 		x = (GamePanel.WIDTH - (int)(rect.getWidth()))/2;
-		y = 300;
+		y = (GamePanel.HEIGHT - (int)(rect.getHeight()))/2 + 70;
 		g.drawString(Start, x, y);
 		
 		rect = fm.getStringBounds(Exit, g);
 		int x2 = (GamePanel.WIDTH - (int)(rect.getWidth()))/2;
-		int y2 = 325;
+		int y2 = y + 25;
 		g.drawString(Exit, x2, y2);
 		
 		//Draw Choice Marker
