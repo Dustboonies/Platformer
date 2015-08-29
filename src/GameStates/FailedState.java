@@ -25,7 +25,7 @@ public class FailedState extends GameState{
 	public FailedState(GameStateManager gsm) {
 		super(gsm);
 		TitleColor = Color.WHITE;
-		TitleFont = new Font("Times New Roman", java.awt.Font.PLAIN, 50);
+		TitleFont = new Font("Times New Roman", java.awt.Font.PLAIN, 40);
 		Font = new Font("Arial", java.awt.Font.PLAIN, 20);
 		SecondFont = new Font("Arial", java.awt.Font.PLAIN, 15);
 	}
@@ -45,7 +45,7 @@ public class FailedState extends GameState{
 		g.setColor(Color.BLACK);
 		g.fillRect(0, 0, GamePanel.WIDTH, GamePanel.HEIGHT);
 		
-		String Title = "F A I L U R E";
+		String Title = "Y O U' R E  F A I L U R E";
 		String Start = "Restart";
 		String Exit = "Exit";
 
