@@ -3,7 +3,7 @@ package Entities;
 public class Enemy extends Entity{
 	
 	protected int HP;
-	protected boolean inAir, wasHittingSomething;
+	protected boolean inAir, wasHittingSomething, removable;
 	
 	public Enemy(int x, int y){
 		this.x = x;
@@ -19,6 +19,7 @@ public class Enemy extends Entity{
 			for(int j = (int)y; j < y + height; j++){
 				if(i >= 0 && i < bitmask.width)
 				if(bitmask.Solid[i][j]){
+					removable = true;
 					if(j < y + height-4){
 						hitNorm = true;
 						hitSmall = true;
@@ -57,6 +58,7 @@ public class Enemy extends Entity{
 			for(int j = (int)y; j < y + height; j++){
 				if(j >= 0 && j < bitmask.height)
 				if(bitmask.Solid[i][j]){
+					removable = true;
 					if(vy < 0){											//Intersecting from Above
 						y = j - height;
 						vy = -0.5;
@@ -86,11 +88,14 @@ public class Enemy extends Entity{
 			inAir = false;
 		}
 		
-		if(inAir) vy -= 0.5;
+		if(inAir) vy -= 0.25;
 		
 		setHitBox();
 	}
 	
 	public int getHP(){return HP;}
 	public void setHP(int hp){HP = hp;}
+	
+	public boolean getRemovable(){return removable;}
+	public void setRemovable(boolean r){removable = r;}
 }

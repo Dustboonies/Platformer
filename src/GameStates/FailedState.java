@@ -45,7 +45,7 @@ public class FailedState extends GameState{
 		g.setColor(Color.BLACK);
 		g.fillRect(0, 0, GamePanel.WIDTH, GamePanel.HEIGHT);
 		
-		String Title = "Y O U' R E  F A I L U R E";
+		String Title = "Y O U' R E  A  F A I L U R E";
 		String Start = "Restart";
 		String Exit = "Exit";
 

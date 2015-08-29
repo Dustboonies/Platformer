@@ -74,6 +74,7 @@ public class Level1State extends GameState{										//This is the Level 1 GameS
 
 
 	public void Update() {														//Every frame the GameState update
+		numKills+= 1000;
 		HandleInput();															//GameState handles key inputs
 		player.HandleInput();													//Player handles key inputs
 		player.Update();														//Player updates according to BitMask
@@ -86,34 +87,38 @@ public class Level1State extends GameState{										//This is the Level 1 GameS
 		}
 		for(int i = 0; i < Enemies.size(); i++){
 			Enemies.get(i).Update();
-			for(int j = 0; j < Projectiles.size(); j++){																	
-				if(i > -1 && j > -1)
-				if(Enemies.get(i).getHitBox().intersects(Projectiles.get(j).getHitBox())){
-					System.out.println("hit");
-					Projectiles.get(j).setRemovable(true);
-					Enemies.get(i).setHP(Enemies.get(i).getHP() - 50);
-					if(Enemies.get(i).getHP() <= 0){
-						numKills++;
-						Enemies.remove(i);
-						i--;
+			if(Enemies.get(i).getRemovable()){
+				Enemies.remove(i);
+				i--;
+			} else{
+				for(int j = 0; j < Projectiles.size(); j++){																	
+					if(i > -1 && j > -1)
+					if(Enemies.get(i).getHitBox().intersects(Projectiles.get(j).getHitBox())){
+						System.out.println("hit");
+						Projectiles.get(j).setRemovable(true);
+						Enemies.get(i).setHP(Enemies.get(i).getHP() - 50);
+						if(Enemies.get(i).getHP() <= 0){
+							numKills++;
+							Enemies.remove(i);
+							i--;
+						}
+					}
+				}
+				if(i > -1)
+				if(Enemies.get(i).getHitBox().intersects(player.getHitBox())){
+					System.out.println("u got hit");
+					player.setHP(player.getHP() - 50);
+					if(player.getHP() <= 0){
+						System.out.println("dead");
+						Manager.SetActiveGameState(GameStateManager.GAMESTATE_FAILED);
 					}
 				}
 			}
-			if(i > -1)
-			if(Enemies.get(i).getHitBox().intersects(player.getHitBox())){
-				System.out.println("u got hit");
-				player.setHP(player.getHP() - 50);
-				if(player.getHP() <= 0){
-					System.out.println("dead");
-					Manager.SetActiveGameState(GameStateManager.GAMESTATE_FAILED);
-				}
-			}	
-			
 		}
 		
-		if(Enemies.size() < 3){
+		if(Enemies.size() < 10){
 			Random rand = new Random();
-			Enemy enemy = new Enemy(rand.nextInt(LEVEL_WIDTH - 30), rand.nextInt(30));
+			Enemy enemy = new Enemy(rand.nextInt(LEVEL_WIDTH - 30), 0);
 			enemy.setWidth(30);
 			enemy.setHeight(30);
 			enemy.setBitMask(bitmask);
