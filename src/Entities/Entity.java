@@ -39,7 +39,7 @@ public class Entity {
 	public void setHeight(int h){height = h;}
 	
 	public Rectangle getHitBox(){return HitBox;}
-	public void setHitBox(){ HitBox = new Rectangle((int)x, (int)y, width, height);}
+	public void setHitBox(){ HitBox = new Rectangle((int)x+2, (int)y+2, width-4, height-4);}
 	public void setHitBox(int x, int y, int width, int height){ HitBox = new Rectangle(x, y, width, height);}
 	
 	public void Update(){}
