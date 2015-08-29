@@ -6,10 +6,12 @@ import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Random;
 
 import javax.imageio.ImageIO;
 
 import BitMask.BitMask;
+import Entities.Enemy;
 import Entities.Player;
 import Entities.Projectile;
 import InputHandlers.Keys;
@@ -23,11 +25,14 @@ public class Level1State extends GameState{										//This is the Level 1 GameS
 	private BitMask bitmask;													//The BitMask which determines what is solid and what is not
 	private Player player;														//The Player of our Game
 	public static int LEVEL_WIDTH, LEVEL_HEIGHT;								//The Level's width and height
-	private ArrayList<Projectile> projectiles = new ArrayList<Projectile>();	//The Projectiles in the game
+	private ArrayList<Projectile> Projectiles = new ArrayList<Projectile>();	//The Projectiles in the game
+	private ArrayList<Enemy> Enemies = new ArrayList<Enemy>();					//The Enemies in the game
+	private int numKills;
 	
 	public Level1State(GameStateManager gsm) {									//The Level 1 GameState constructor
 		super(gsm);																//Pass into the Super the Game State Manager
 		Init();																	//Initialize Function is Called
+		numKills = 0;
 	}
 
 
@@ -40,6 +45,8 @@ public class Level1State extends GameState{										//This is the Level 1 GameS
 		player.setHeight(34);													//Set the Player's height
 		player.setHasWeapon(true);												//We set the Player as having a weapon for testing purposes
 		player.setWeapon(new TestGun());
+		
+		
 		
 		try{
 			Foreground = ImageIO.read(new File("Images/Foreground.png"));		//Initialize Foreground image which is the image we see
@@ -56,6 +63,12 @@ public class Level1State extends GameState{										//This is the Level 1 GameS
 		LEVEL_WIDTH = GeometryMap.getWidth();									//Set the Level's width
 		LEVEL_HEIGHT = GeometryMap.getHeight();									//Set the Level's height
 		
+		Enemy enemy = new Enemy(100, 0);
+		enemy.setWidth(30);
+		enemy.setHeight(30);
+		enemy.setBitMask(bitmask);
+		Enemies.add(enemy);
+		
 		SetCameraOnPlayer();
 	}
 
@@ -64,13 +77,47 @@ public class Level1State extends GameState{										//This is the Level 1 GameS
 		HandleInput();															//GameState handles key inputs
 		player.HandleInput();													//Player handles key inputs
 		player.Update();														//Player updates according to BitMask
-		for(int i = 0; i < projectiles.size(); i++){							//Go through all the Projectiles
-			projectiles.get(i).Update();										//Updates Projectiles
-			if(!Camera.intersects(projectiles.get(i).getHitBox()) || projectiles.get(i).getRemovable()){//If projectile is off screen or hit something remove it
-				projectiles.remove(i);											//Remove the laser
+		for(int i = 0; i < Projectiles.size(); i++){							//Go through all the Projectiles
+			Projectiles.get(i).Update();										//Updates Projectiles
+			if(!Camera.intersects(Projectiles.get(i).getHitBox()) || Projectiles.get(i).getRemovable()){//If projectile is off screen or hit something remove it
+				Projectiles.remove(i);											//Remove the laser
 				i--;															//Go back one space to make up for lost projectile
 			}
+		}
+		for(int i = 0; i < Enemies.size(); i++){
+			Enemies.get(i).Update();
+			for(int j = 0; j < Projectiles.size(); j++){																	
+				if(i > -1 && j > -1)
+				if(Enemies.get(i).getHitBox().intersects(Projectiles.get(j).getHitBox())){
+					System.out.println("hit");
+					Projectiles.get(j).setRemovable(true);
+					Enemies.get(i).setHP(Enemies.get(i).getHP() - 50);
+					if(Enemies.get(i).getHP() <= 0){
+						numKills++;
+						Enemies.remove(i);
+						i--;
+					}
+				}
+			}
+			if(i > -1)
+			if(Enemies.get(i).getHitBox().intersects(player.getHitBox())){
+				System.out.println("u got hit");
+				player.setHP(player.getHP() - 50);
+				if(player.getHP() <= 0){
+					System.out.println("dead");
+					Manager.SetActiveGameState(GameStateManager.GAMESTATE_FAILED);
+				}
+			}	
 			
+		}
+		
+		if(Enemies.size() < 3){
+			Random rand = new Random();
+			Enemy enemy = new Enemy(rand.nextInt(LEVEL_WIDTH - 30), rand.nextInt(30));
+			enemy.setWidth(30);
+			enemy.setHeight(30);
+			enemy.setBitMask(bitmask);
+			Enemies.add(enemy);
 		}
 		
 		if(player.getX() < 0) player.setX(0);									//if off screen stop it from going off screen
@@ -84,15 +131,25 @@ public class Level1State extends GameState{										//This is the Level 1 GameS
 
 	@Override
 	public void Draw(Graphics2D g) {		
-		if(player.getFacingRight()) g.drawImage(Sprite, player.getX() - Camera.x, player.getY() - Camera.y, player.getWidth(), player.getHeight(), null);
-		else g.drawImage(Sprite, player.getX() + player.getWidth() - Camera.x, player.getY() - Camera.y, -1 * player.getWidth(), player.getHeight(), null);
+		if(player != null){
+			if(player.getFacingRight()) g.drawImage(Sprite, player.getX() - Camera.x, player.getY() - Camera.y, player.getWidth(), player.getHeight(), null);
+			else g.drawImage(Sprite, player.getX() + player.getWidth() - Camera.x, player.getY() - Camera.y, -1 * player.getWidth(), player.getHeight(), null);
+		}
 
 		g.drawImage(Foreground.getSubimage(Camera.x, Camera.y, Camera.width, Camera.height), 0, 0, Camera.width, Camera.height, null);
 		
-		for(int i = 0; i < projectiles.size(); i++){
+		for(int i = 0; i < Projectiles.size(); i++){
 			g.setColor(Color.RED);
-			g.fillRect(projectiles.get(i).getX() - Camera.x, projectiles.get(i).getY() - Camera.y, projectiles.get(i).getWidth(), projectiles.get(i).getHeight());
+			g.fillRect(Projectiles.get(i).getX() - Camera.x, Projectiles.get(i).getY() - Camera.y, Projectiles.get(i).getWidth(), Projectiles.get(i).getHeight());
 		}
+		
+		for(int i = 0; i < Enemies.size(); i++){
+			g.setColor(Color.BLACK);
+			if(Camera.intersects(Enemies.get(i).getHitBox()))
+			g.fillOval(Enemies.get(i).getX() - Camera.x, Enemies.get(i).getY() - Camera.y, Enemies.get(i).getWidth(), Enemies.get(i).getHeight());
+		}
+		
+		g.drawString("Number of Kills: " + numKills, 10, 20);
 	}
 
 	@Override
@@ -102,7 +159,7 @@ public class Level1State extends GameState{										//This is the Level 1 GameS
 		}
 		
 		if(Keys.isPressed(Keys.R) && player.getHasWeapon()){ //attack
-			projectiles.add(player.getWeapon().rangedAttack(player.getX(), player.getY(), player.getWidth(), player.getHeight(), player.getFacingRight(), bitmask));
+			Projectiles.add(player.getWeapon().rangedAttack(player.getX(), player.getY(), player.getWidth(), player.getHeight(), player.getFacingRight(), bitmask));
 		}
 		
 		

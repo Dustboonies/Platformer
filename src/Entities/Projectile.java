@@ -22,8 +22,9 @@ public class Projectile extends Entity{
 				}
 			}
 		}
+		setHitBox();
 	}
 	
 	public boolean getRemovable(){return removable;}
-	
+	public void setRemovable(boolean r){removable = r;}
 }

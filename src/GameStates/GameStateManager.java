@@ -13,11 +13,12 @@ public class GameStateManager {									//Manages Game States
 	private PauseState PauseState;								//Has the ability to Pause during different states
 	private boolean Paused;										//Boolean telling if paused or not
 	
-	public static final int GAMESTATE_NUMSTATES = 4;			//Number of Game States
+	public static final int GAMESTATE_NUMSTATES = 5;			//Number of Game States
 	public static final int GAMESTATE_NONE = 0;					//Game State ID for No State
 	public static final int GAMESTATE_INTRO = 1;				//Game State ID for an Intro *Currently Uncreated*
 	public static final int GAMESTATE_MENU = 2;					//Game State ID for the Menu State
 	public static final int GAMESTATE_LEVEL1 = 3;				//Game State ID for Level 1 *Currently Just a Bouncing Ball*
+	public static final int GAMESTATE_FAILED = 4;				//Game State ID for when you fail
 	
 	public GameStateManager(){									//Constructor for GameState Manager
 		GameStates = new GameState[GAMESTATE_NUMSTATES];		//Initialize Array
@@ -34,6 +35,8 @@ public class GameStateManager {									//Manages Game States
 			GameStates[GameStateID] = new MenuState(this);
 		} else if(GameStateID == GAMESTATE_LEVEL1){				//Loads Level1 State
 			GameStates[GameStateID] = new Level1State(this);
+		} else if(GameStateID == GAMESTATE_FAILED){				//Loads Level1 State
+			GameStates[GameStateID] = new FailedState(this);
 		}
 	}
 

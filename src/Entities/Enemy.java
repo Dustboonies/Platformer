@@ -1,60 +1,18 @@
 package Entities;
 
-import InputHandlers.Keys;
-import Weapons.Weapon;
-
-public class Player extends Entity{
-
-	private boolean inAir, wasHittingSomething, hasWeapon;
-	private int numFrames, numSecs, HP;
-	public Weapon weapon;
+public class Enemy extends Entity{
 	
-	public Player(){
+	protected int HP;
+	protected boolean inAir, wasHittingSomething;
+	
+	public Enemy(int x, int y){
+		this.x = x;
+		this.y = y;
 		HP = 100;
-	}
-	
-	public boolean getHasWeapon(){return hasWeapon;}
-	public void setHasWeapon(boolean hw){hasWeapon = hw;}
-	
-	public void setWeapon(Weapon w){
-		weapon = w;
-		hasWeapon = true;
-	}
-	
-	public Weapon getWeapon(){
-		return weapon;
-	}
-	
-	public int getHP(){return HP;}
-	public void setHP(int hp){HP = hp;}
-	
-	public void HandleInput(){
-		if(Keys.KeyState[Keys.RIGHT]){
-			FacingRight = true;
-			vx = 3;
-		} else if(vx > 0){
-			vx = 0;
-		}
-		if(Keys.KeyState[Keys.LEFT]){
-			FacingRight = false;
-			vx = -3;
-		} else if(vx < 0){
-			vx = 0;
-		}
-		if(Keys.isPressed(Keys.UP) && (!inAir || numFrames > 0)){
-			inAir = true;
-			vy = 7;
-			numSecs = 10;
-		}
-		if(Keys.KeyState[Keys.UP] && inAir && numSecs > 0){
-			vy = 7;
-		}
 	}
 	
 	@Override
 	public void Update(){
-		if(numSecs > 0) numSecs--;
-		if(numFrames > 0) numFrames--;
 		boolean hitNorm = false, hitSmall = false;
 		x += vx;
 		for(int i = (int)x; i < x + width; i++){
@@ -115,7 +73,6 @@ public class Player extends Entity{
 
 		if(!hitSomethingBelow){
 			inAir = true;
-			if(wasHittingSomething) numFrames = 10;
 			wasHittingSomething = false;
 		}
 		else inAir = false;
@@ -133,4 +90,7 @@ public class Player extends Entity{
 		
 		setHitBox();
 	}
+	
+	public int getHP(){return HP;}
+	public void setHP(int hp){HP = hp;}
 }
