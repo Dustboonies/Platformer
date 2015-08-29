@@ -24,8 +24,6 @@ public class Level1State extends GameState{										//This is the Level 1 GameS
 	private Player player;														//The Player of our Game
 	public static int LEVEL_WIDTH, LEVEL_HEIGHT;								//The Level's width and height
 	private ArrayList<Projectile> projectiles = new ArrayList<Projectile>();	//The Projectiles in the game
-	private boolean wasLeft, wasRight;
-	private int oldx, oldcamx;
 	
 	public Level1State(GameStateManager gsm) {									//The Level 1 GameState constructor
 		super(gsm);																//Pass into the Super the Game State Manager
@@ -57,8 +55,8 @@ public class Level1State extends GameState{										//This is the Level 1 GameS
 		
 		LEVEL_WIDTH = GeometryMap.getWidth();									//Set the Level's width
 		LEVEL_HEIGHT = GeometryMap.getHeight();									//Set the Level's height
-		wasLeft = false;
-		wasRight = false;
+		
+		SetCameraOnPlayer();
 	}
 
 
@@ -80,18 +78,15 @@ public class Level1State extends GameState{										//This is the Level 1 GameS
 		if(player.getY() < 0) player.setY(0);
 		else if(player.getY() + player.getHeight() > LEVEL_HEIGHT) player.setY(LEVEL_HEIGHT - player.getHeight());
 		
-		UpdateCamera();															//
+		UpdateCamera();															//Update the Camera according to the player
 		
 	}
 
 	@Override
-	public void Draw(Graphics2D g) {
-		g.setColor(Color.RED);
-		g.fillRect(Camera.width/2 - 45, 0, 90, Camera.height);
-		
+	public void Draw(Graphics2D g) {		
 		if(player.getFacingRight()) g.drawImage(Sprite, player.getX() - Camera.x, player.getY() - Camera.y, player.getWidth(), player.getHeight(), null);
 		else g.drawImage(Sprite, player.getX() + player.getWidth() - Camera.x, player.getY() - Camera.y, -1 * player.getWidth(), player.getHeight(), null);
-		
+
 		g.drawImage(Foreground.getSubimage(Camera.x, Camera.y, Camera.width, Camera.height), 0, 0, Camera.width, Camera.height, null);
 		
 		for(int i = 0; i < projectiles.size(); i++){
@@ -113,21 +108,45 @@ public class Level1State extends GameState{										//This is the Level 1 GameS
 		
 	}
 	
-	public void UpdateCamera(){
-		int cx = (player.getX()+player.getWidth()/2)-Camera.width/2;
-		
-		if(cx < 0) cx = 0;
-		if(cx + Camera.width > LEVEL_WIDTH) cx = LEVEL_WIDTH - Camera.width;
-		
-		Camera.x = cx;
+	public void UpdateCamera(){		
+		if(player.getX() < Camera.x + Camera.width/2 - 45 && player.getVX() < 0){
+			int cx = Camera.x - 3;
+			
+			if(cx < 0) cx = 0;
+			if(cx + Camera.width > LEVEL_WIDTH) cx = LEVEL_WIDTH - Camera.width;
+			
+			Camera.x = cx;
+		} else if(player.getX() > Camera.x + Camera.width/2 + 45 - player.getWidth() && player.getVX() > 0){
+			int cx = Camera.x + 3;
+			
+			if(cx < 0) cx = 0;
+			if(cx + Camera.width > LEVEL_WIDTH) cx = LEVEL_WIDTH - Camera.width;
+			
+			Camera.x = cx;
+		}
 		
 		int cy = (player.getY()+player.getHeight()/2)-Camera.height/2;
 		
 		if(cy < 0) cy = 0;
 		if(cy + Camera.height > LEVEL_HEIGHT) cy = LEVEL_HEIGHT - Camera.height;
 		
-		Camera.y = cy;
 		
+		Camera.y = cy;
+	}
+	
+	public void SetCameraOnPlayer(){
+		int cx = (player.getX()+player.getWidth()/2)-Camera.width/2;
+		
+		if(cx < 0) cx = 0;
+		if(cx + Camera.width > LEVEL_WIDTH) cx = LEVEL_WIDTH - Camera.width;
+		
+		int cy = (player.getY()+player.getHeight()/2)-Camera.height/2;
+		
+		if(cy < 0) cy = 0;
+		if(cy + Camera.height > LEVEL_HEIGHT) cy = LEVEL_HEIGHT - Camera.height;
+		
+		Camera.x = cx;
+		Camera.y = cy;
 	}
 	
 }
