@@ -20,6 +20,8 @@ public class GameStateManager {									//Manages Game States
 	public static final int GAMESTATE_LEVEL1 = 3;				//Game State ID for Level 1 *Currently Just a Bouncing Ball*
 	public static final int GAMESTATE_FAILED = 4;				//Game State ID for when you fail
 	
+	public int numKills;
+	
 	public GameStateManager(){									//Constructor for GameState Manager
 		GameStates = new GameState[GAMESTATE_NUMSTATES];		//Initialize Array
 		
@@ -70,6 +72,8 @@ public class GameStateManager {									//Manages Game States
 		Paused = p;
 	}
 	
-	
+	public void setNumKills(int x){
+		numKills = x;
+	}
 	
 }

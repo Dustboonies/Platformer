@@ -27,7 +27,7 @@ public class Level1State extends GameState{										//This is the Level 1 GameS
 	public static int LEVEL_WIDTH, LEVEL_HEIGHT;								//The Level's width and height
 	private ArrayList<Projectile> Projectiles = new ArrayList<Projectile>();	//The Projectiles in the game
 	private ArrayList<Enemy> Enemies = new ArrayList<Enemy>();					//The Enemies in the game
-	private int numKills;
+	public static int numKills;
 	
 	public Level1State(GameStateManager gsm) {									//The Level 1 GameState constructor
 		super(gsm);																//Pass into the Super the Game State Manager
@@ -110,7 +110,8 @@ public class Level1State extends GameState{										//This is the Level 1 GameS
 					player.setHP(player.getHP() - 50);
 					if(player.getHP() <= 0){
 						System.out.println("dead");
-						Manager.SetActiveGameState(GameStateManager.GAMESTATE_FAILED);
+						Manager.setNumKills(numKills);
+						Manager.SetActiveGameState(GameStateManager.GAMESTATE_FAILED);	
 					}
 				}
 			}
@@ -210,5 +211,6 @@ public class Level1State extends GameState{										//This is the Level 1 GameS
 		Camera.x = cx;
 		Camera.y = cy;
 	}
+	
 	
 }
