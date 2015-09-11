@@ -7,7 +7,6 @@ import java.awt.Graphics2D;
 
 import InputHandlers.Keys;
 import Main.GamePanel;
-import GameStates.Level1State;
 
 public class FailedState extends GameState{
 	
