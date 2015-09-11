@@ -21,6 +21,8 @@ public class GameStateManager {									//Manages Game States
 	public static final int GAMESTATE_FAILED = 4;				//Game State ID for when you fail
 	public static final int GAMESTATE_MINIGAME = 5;				//Game State ID for when you enter minigame
 	
+	public int numKills;
+	
 	public GameStateManager(){									//Constructor for GameState Manager
 		GameStates = new GameState[GAMESTATE_NUMSTATES];		//Initialize Array
 		
@@ -73,6 +75,8 @@ public class GameStateManager {									//Manages Game States
 		Paused = p;
 	}
 	
-	
+	public void setNumKills(int x){
+		numKills = x;
+	}
 	
 }

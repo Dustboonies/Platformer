@@ -7,6 +7,7 @@ import java.awt.Graphics2D;
 
 import InputHandlers.Keys;
 import Main.GamePanel;
+import GameStates.Level1State;
 
 public class FailedState extends GameState{
 	
@@ -22,12 +23,15 @@ public class FailedState extends GameState{
 	private Font Font;
 	private Font SecondFont;
 	
+	public static int numKills;
+	
 	public FailedState(GameStateManager gsm) {
 		super(gsm);
 		TitleColor = Color.WHITE;
 		TitleFont = new Font("Times New Roman", java.awt.Font.PLAIN, 40);
 		Font = new Font("Arial", java.awt.Font.PLAIN, 20);
 		SecondFont = new Font("Arial", java.awt.Font.PLAIN, 15);
+		numKills = gsm.numKills;
 	}
 
 	@Override
@@ -88,6 +92,7 @@ public class FailedState extends GameState{
 		// other
 		g.setFont(SecondFont);
 		g.drawString("2015 DIED Inc.", 10, GamePanel.HEIGHT - 10);
+		g.drawString(""+numKills, 400, GamePanel.HEIGHT - 10);
 	}
 
 	private void select() {
