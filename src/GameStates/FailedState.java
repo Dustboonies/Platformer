@@ -12,7 +12,7 @@ public class FailedState extends GameState{
 	
 	private int CurrentChoice = 0;
 	private String[] Options = {
-		"Restart",
+		"Menu",
 		"Quit"
 	};
 	
@@ -46,7 +46,7 @@ public class FailedState extends GameState{
 		g.fillRect(0, 0, GamePanel.WIDTH, GamePanel.HEIGHT);
 		
 		String Title = "Y O U' R E  A  F A I L U R E";
-		String Start = "Restart";
+		String Start = "Menu";
 		String Exit = "Exit";
 
 		
@@ -92,8 +92,7 @@ public class FailedState extends GameState{
 
 	private void select() {
 		if(CurrentChoice == 0) {
-			System.out.println("Game Not Created Yet");
-			Manager.SetActiveGameState(GameStateManager.GAMESTATE_LEVEL1);
+			Manager.SetActiveGameState(GameStateManager.GAMESTATE_MENU);
 		}
 		else if(CurrentChoice == 1) {
 			System.exit(0);

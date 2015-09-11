@@ -19,7 +19,6 @@ public class Enemy extends Entity{
 			for(int j = (int)y; j < y + height; j++){
 				if(i >= 0 && i < bitmask.width)
 				if(bitmask.Solid[i][j]){
-					removable = true;
 					if(j < y + height-4){
 						hitNorm = true;
 						hitSmall = true;
@@ -58,7 +57,6 @@ public class Enemy extends Entity{
 			for(int j = (int)y; j < y + height; j++){
 				if(j >= 0 && j < bitmask.height)
 				if(bitmask.Solid[i][j]){
-					removable = true;
 					if(vy < 0){											//Intersecting from Above
 						y = j - height;
 						vy = -0.5;

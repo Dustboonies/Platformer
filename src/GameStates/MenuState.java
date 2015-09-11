@@ -13,6 +13,7 @@ public class MenuState extends GameState{
 	private int CurrentChoice = 0;
 	private String[] Options = {
 		"Start",
+		"Mini Game" ,
 		"Quit"
 	};
 	
@@ -46,8 +47,9 @@ public class MenuState extends GameState{
 		g.fillRect(0, 0, GamePanel.WIDTH, GamePanel.HEIGHT);
 		
 		String Title = "C O O L N A M E";
-		String Start = "Start";
+		String Start = "Mini Game";
 		String Exit = "Exit";
+		String Level1 = "Level 1";
 
 		
 		// draw title
@@ -66,23 +68,30 @@ public class MenuState extends GameState{
 		fm = g.getFontMetrics();
 		
 		//draw Start
-		rect = fm.getStringBounds(Start, g);
+		rect = fm.getStringBounds(Level1, g);
 		x = (GamePanel.WIDTH - (int)(rect.getWidth()))/2;
 		y = (GamePanel.HEIGHT - (int)(rect.getHeight()))/2 + 70;
-		g.drawString(Start, x, y);
+		g.drawString(Level1, x, y);
 		
-		rect = fm.getStringBounds(Exit, g);
+		rect = fm.getStringBounds(Start, g);
 		int x2 = (GamePanel.WIDTH - (int)(rect.getWidth()))/2;
 		int y2 = y + 25;
-		g.drawString(Exit, x2, y2);
+		g.drawString(Start, x2, y2);
+		
+		rect = fm.getStringBounds(Exit, g);
+		int x3 = (GamePanel.WIDTH - (int)(rect.getWidth()))/2;
+		int y3 = y2 + 25;
+		g.drawString(Exit, x3, y3);
 		
 		//Draw Choice Marker
 		g.setColor(Color.RED);
 		if(CurrentChoice == 0){
-			g.fillRect(x-20, y-13, 10, 10);
+			g.fillRect(x2-20, y-13, 10, 10);
 		}
 		else if(CurrentChoice == 1){
-			g.fillRect(x-20, y2-13, 10, 10);
+			g.fillRect(x2-20, y2-13, 10, 10);
+		} else if(CurrentChoice == 2){
+			g.fillRect(x2-20, y3-13, 10, 10);
 		}
 		
 		// other
@@ -96,6 +105,10 @@ public class MenuState extends GameState{
 			Manager.SetActiveGameState(GameStateManager.GAMESTATE_LEVEL1);
 		}
 		else if(CurrentChoice == 1) {
+			System.out.println("Game Not Created Yet");
+			Manager.SetActiveGameState(GameStateManager.GAMESTATE_MINIGAME);
+		}
+		else if(CurrentChoice == 2) {
 			System.exit(0);
 		}
 	}

@@ -6,30 +6,33 @@ import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Random;
 
 import javax.imageio.ImageIO;
 
 import BitMask.BitMask;
-import Entities.Enemy;
+import Entities.BallEnemy;
 import Entities.Player;
 import Entities.Projectile;
 import InputHandlers.Keys;
 import Main.GamePanel;
 import Weapons.TestGun;
 
-public class Level1State extends GameState{										//This is the Level 1 GameState
+public class MiniGameState extends GameState{									//This is the Level 1 GameState
 
-	private BufferedImage GeometryMap, Foreground, Sprite, Background;						//Images for our game to use
+	private BufferedImage GeometryMap, Foreground, Sprite;						//Images for our game to use
 	private Rectangle Camera;													//The Portion of the Map which needs to be Rendered
 	private BitMask bitmask;													//The BitMask which determines what is solid and what is not
 	private Player player;														//The Player of our Game
 	public static int LEVEL_WIDTH, LEVEL_HEIGHT;								//The Level's width and height
 	private ArrayList<Projectile> Projectiles = new ArrayList<Projectile>();	//The Projectiles in the game
-	private ArrayList<Enemy> Enemies = new ArrayList<Enemy>();					//The Enemies in the game
+	private ArrayList<BallEnemy> Enemies = new ArrayList<BallEnemy>();					//The Enemies in the game
+	private int numKills;
 	
-	public Level1State(GameStateManager gsm) {									//The Level 1 GameState constructor
+	public MiniGameState(GameStateManager gsm) {									//The Level 1 GameState constructor
 		super(gsm);																//Pass into the Super the Game State Manager
 		Init();																	//Initialize Function is Called
+		numKills = 0;
 	}
 
 
@@ -49,7 +52,6 @@ public class Level1State extends GameState{										//This is the Level 1 GameS
 			Foreground = ImageIO.read(new File("Images/Foreground.png"));		//Initialize Foreground image which is the image we see
 			GeometryMap = ImageIO.read(new File("Images/GeometryMap.png"));		//Initialize the Geometry Map image which we cant see but determines what pizels are solid
 			Sprite = ImageIO.read(new File("Images/sprite.png"));				//Initialize the Sprite image which will represent our character
-			Background = ImageIO.read(new File("Images/StoneBackground.png"));
 		} catch(Exception e){
 			e.printStackTrace();												//If there is an error show it
 		}
@@ -61,17 +63,12 @@ public class Level1State extends GameState{										//This is the Level 1 GameS
 		LEVEL_WIDTH = GeometryMap.getWidth();									//Set the Level's width
 		LEVEL_HEIGHT = GeometryMap.getHeight();									//Set the Level's height
 		
-		Enemy enemy = new Enemy(100, 0);
-		enemy.setWidth(30);
-		enemy.setHeight(30);
-		enemy.setBitMask(bitmask);
-		Enemies.add(enemy);
-		
 		SetCameraOnPlayer();
 	}
 
 
 	public void Update() {														//Every frame the GameState update
+		numKills+= 1000;
 		HandleInput();															//GameState handles key inputs
 		player.HandleInput();													//Player handles key inputs
 		player.Update();														//Player updates according to BitMask
@@ -95,6 +92,7 @@ public class Level1State extends GameState{										//This is the Level 1 GameS
 						Projectiles.get(j).setRemovable(true);
 						Enemies.get(i).setHP(Enemies.get(i).getHP() - 50);
 						if(Enemies.get(i).getHP() <= 0){
+							numKills++;
 							Enemies.remove(i);
 							i--;
 						}
@@ -112,6 +110,15 @@ public class Level1State extends GameState{										//This is the Level 1 GameS
 			}
 		}
 		
+		if(Enemies.size() < 10){
+			Random rand = new Random();
+			BallEnemy enemy = new BallEnemy(rand.nextInt(LEVEL_WIDTH - 30), 0);
+			enemy.setWidth(30);
+			enemy.setHeight(30);
+			enemy.setBitMask(bitmask);
+			Enemies.add(enemy);
+		}
+		
 		if(player.getX() < 0) player.setX(0);									//if off screen stop it from going off screen
 		else if(player.getX() + player.getWidth() > LEVEL_WIDTH) player.setX(LEVEL_WIDTH - player.getWidth());
 		if(player.getY() < 0) player.setY(0);
@@ -123,12 +130,6 @@ public class Level1State extends GameState{										//This is the Level 1 GameS
 
 	@Override
 	public void Draw(Graphics2D g) {		
-		for(int i = 0; i < LEVEL_WIDTH/192 + 1; i++){
-			for(int j = 0; j < LEVEL_HEIGHT/192 + 1; j++){
-				g.drawImage(Background, i*190-1, j*190-1, 192, 192, null);
-			}
-		}
-		
 		if(player != null){
 			if(player.getFacingRight()) g.drawImage(Sprite, player.getX() - Camera.x, player.getY() - Camera.y, player.getWidth(), player.getHeight(), null);
 			else g.drawImage(Sprite, player.getX() + player.getWidth() - Camera.x, player.getY() - Camera.y, -1 * player.getWidth(), player.getHeight(), null);
@@ -146,6 +147,8 @@ public class Level1State extends GameState{										//This is the Level 1 GameS
 			if(Camera.intersects(Enemies.get(i).getHitBox()))
 			g.fillOval(Enemies.get(i).getX() - Camera.x, Enemies.get(i).getY() - Camera.y, Enemies.get(i).getWidth(), Enemies.get(i).getHeight());
 		}
+		
+		g.drawString("Number of Kills: " + numKills, 10, 20);
 	}
 
 	@Override
@@ -203,3 +206,4 @@ public class Level1State extends GameState{										//This is the Level 1 GameS
 	}
 	
 }
+
