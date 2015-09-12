@@ -126,9 +126,9 @@ public class Level1State extends GameState{										//This is the Level 1 GameS
 
 	@Override
 	public void Draw(Graphics2D g) {		
-		for(int i = 0; i < LEVEL_WIDTH/192 + 1; i++){
-			for(int j = 0; j < LEVEL_HEIGHT/192 + 1; j++){
-				g.drawImage(Background, i*190-1, j*190-1, 192, 192, null);
+		for(int i = 0; i < Camera.width/192 + 2; i++){
+			for(int j = 0; j < Camera.height/192 + 2; j++){
+				g.drawImage(Background, i*190-1 - Camera.x%192, j*190-1 - Camera.y%192, 192, 192, null);
 			}
 		}
 		

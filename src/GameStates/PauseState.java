@@ -64,7 +64,7 @@ public class PauseState extends GameState{
 		g.fillRect(x-3, y - (int)rect.getHeight(), (int)rect.getWidth()+6, (int)rect.getHeight()+6);
 		
 		g.setColor(Color.WHITE);
-		g.drawString(Options[0], x, y);
+		g.drawString(Options[1], x, y);
 	}
 
 	@Override
