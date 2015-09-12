@@ -12,7 +12,7 @@ import java.awt.FontMetrics;
 
 public class PauseState extends GameState{
 
-	private int CurrentChoice = 0;
+//	private int CurrentChoice = 0;
 	private String[] Options = {
 		"Menu",
 		"Resume"

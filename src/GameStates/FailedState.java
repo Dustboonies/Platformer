@@ -91,7 +91,6 @@ public class FailedState extends GameState{
 		// other
 		g.setFont(SecondFont);
 		g.drawString("2015 DIED Inc.", 10, GamePanel.HEIGHT - 10);
-		g.drawString(""+numKills, 400, GamePanel.HEIGHT - 10);
 	}
 
 	private void select() {

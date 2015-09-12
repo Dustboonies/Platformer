@@ -14,7 +14,6 @@ public class Weapon {
 	public BufferedImage weaponImage;
 	public BufferedImage weaponImageAttack;
 	public boolean isAttacking;
-	private Rectangle hitbox;
 	
 	
 	public void setWeapon(){
